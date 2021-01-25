@@ -1,43 +1,65 @@
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kotest_version: String by project
-
 plugins {
-	id("org.springframework.boot") version "2.4.2"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.4.21"
-	kotlin("plugin.spring") version "1.4.21"
+	val kotlinVersion = "1.4.21"
+	val springVersion = "2.4.1"
+	val springDependencyManagementVersion = "1.0.10.RELEASE"
+
+	idea
+	kotlin("jvm") version kotlinVersion apply false
+	kotlin("plugin.spring") version kotlinVersion apply false
+	id("org.springframework.boot") version springVersion apply false
+	id("io.spring.dependency-management") version springDependencyManagementVersion
 }
 
-group = "io.tripled"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+allprojects {
+	group = "io.tripled"
+	version = "0.0.1-SNAPSHOT"
 
-repositories {
-	mavenCentral()
-}
 
-dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	testImplementation("io.kotest:kotest-runner-junit5:$kotest_version")
-	testImplementation("io.kotest:kotest-assertions-core:$kotest_version")
-	testImplementation("io.kotest:kotest-property:$kotest_version")
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+	repositories {
+		mavenCentral()
+	}
+
+	tasks.withType<KotlinCompile> {
+		kotlinOptions {
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+			jvmTarget = JavaVersion.VERSION_1_8.toString()
+		}
+	}
+
+	tasks.withType<Test> {
+		useJUnitPlatform()
 	}
 }
 
+subprojects {
+	println("Enabling Spring Boot plugin in project ${project.name}...")
+	apply(plugin = "org.springframework.boot")
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "1.8"
+	println("Enabling Kotlin Spring plugin in project ${project.name}...")
+	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+
+	tasks.withType<KotlinCompile> {
+		println("Configuring KotlinCompile  $name in project ${project.name}...")
+		kotlinOptions {
+			languageVersion = "1.4"
+			apiVersion = "1.4"
+			jvmTarget = "1.8"
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+		}
 	}
-}
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+	println("Enabling Spring Boot Dependency Management in project ${project.name}...")
+	apply(plugin = "io.spring.dependency-management")
+	configure<DependencyManagementExtension> {
+		imports {
+			mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+		}
+	}
+
+	tasks.withType<Test> {
+		useJUnitPlatform()
+	}
 }
