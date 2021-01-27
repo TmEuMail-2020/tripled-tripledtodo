@@ -1,13 +1,20 @@
 val kotest_version: String by project
 
 plugins {
+    val springVersion = "2.4.1"
+
     kotlin("jvm")
     kotlin("plugin.spring")
-    id("org.springframework.boot")
+    id("org.springframework.boot") version springVersion
     id("io.spring.dependency-management")
 }
 
 dependencies {
+    implementation(project(":vocabulary"))
+    implementation(project(":application:api"))
+    implementation(project(":application:app"))
+    implementation(project(":application:domain"))
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

@@ -1,4 +1,4 @@
-package io.tripled.tasks
+package io.tripled.todo
 
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.AssertionMode
