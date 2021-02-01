@@ -8,4 +8,8 @@ class FakeTodoItemsRepository : TestTodoItems, TodoItemsRepository {
 
     override val lastSaved: TodoItem.Snapshot
         get() = _lastSaved
+
+    override fun save(createdTodoItem: TodoItem) {
+        _lastSaved = createdTodoItem.snapshot
+    }
 }
