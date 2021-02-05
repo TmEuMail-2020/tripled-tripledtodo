@@ -1,5 +1,6 @@
 package io.tripled.todo
 
+import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.domain.TodoItemsRepository
 
 class CreateTodoItemCommand(private val todoItemRepository: TodoItemsRepository) : CreateTodoItem {

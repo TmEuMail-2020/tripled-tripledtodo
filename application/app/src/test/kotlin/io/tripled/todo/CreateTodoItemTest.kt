@@ -3,6 +3,7 @@ package io.tripled.todo
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.AssertionMode
 import io.kotest.matchers.shouldBe
+import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.fakes.FakeTodoItemsRepository
 import io.tripled.todo.fakes.TestTodoItems
 
