@@ -24,8 +24,11 @@ class CreateTodoItemTest : BehaviorSpec() {
             `when`("Creating the todo") {
                 val response = createTodoItem.create(request)
 
-                then("We verify that the todo item has been saved") {
-                    testTodoItems.lastSaved shouldBe TodoItem.Snapshot(response.id, title, description)
+                then("We verify that the todo item has been saved correctly") {
+                    testTodoItems.lastSaved shouldBe TodoItem.Snapshot(response.id,
+                                                        title,
+                                                        description,
+                                                        TodoItem.Status.CREATED)
                 }
             }
         }
