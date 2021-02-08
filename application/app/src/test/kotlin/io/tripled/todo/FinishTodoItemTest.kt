@@ -14,23 +14,23 @@ class FinishTodoItemTest : BehaviorSpec() {
 
         val fakeTodoItemRepository = FakeTodoItemsRepository()
         val testTodoItems: TestTodoItems = fakeTodoItemRepository
-/*        val finishTodoItem = FinishTodoItemCommand(fakeTodoItemRepository)
+        val finishTodoItem: FinishTodoItem = FinishTodoItemCommand(fakeTodoItemRepository)
 
         given("A todo item that's in progress") {
             val todoId = TodoId.create("abc-123")
             val existingTodoItem = TodoItem.Snapshot(todoId, "title", "description", TodoItem.Status.CREATED)
-            val request = FinishTodoItem.Request()
+            fakeTodoItemRepository.assumeExisting = existingTodoItem
+            val request = FinishTodoItem.Request(todoId)
 
             `when`("Finishing the todo") {
-                val response = createTodoItem.create(request)
+                finishTodoItem.create(request)
 
                 then("We verify todo item has been finished") {
-                    testTodoItems.lastSaved shouldBe TodoItem.Snapshot(response.id,
-                                                                        title,
-                                                                        description,
+                    testTodoItems.lastSaved shouldBe TodoItem.Snapshot(todoId,
+                                                                        "title", "description",
                                                                         TodoItem.Status.FINISHED)
                 }
             }
-        }*/
+        }
     }
 }

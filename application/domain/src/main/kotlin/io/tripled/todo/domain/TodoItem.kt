@@ -6,9 +6,13 @@ class TodoItem(private val title: String,
                private val description: String) {
     val id: TodoId = TodoId.newId()
 
-    data class Snapshot(val id: TodoId, val title: String, val description: String)
+    data class Snapshot(val id: TodoId, val title: String, val description: String, val status: Status)
+    enum class Status {
+        CREATED,
+        FINISHED
+    }
 
     val snapshot: Snapshot
-        get() = Snapshot(id, title, description)
+        get() = Snapshot(id, title, description, Status.CREATED)
 
 }

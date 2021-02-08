@@ -14,7 +14,7 @@ class CreateTodoItemTest : BehaviorSpec() {
 
         val fakeTodoItemRepository = FakeTodoItemsRepository()
         val testTodoItems: TestTodoItems = fakeTodoItemRepository
-        val createTodoItem = CreateTodoItemCommand(fakeTodoItemRepository)
+        val createTodoItem: CreateTodoItem = CreateTodoItemCommand(fakeTodoItemRepository)
 
         given("A title and description of a todo item") {
             val title = "Painting"

@@ -5,5 +5,6 @@ import java.util.*
 data class TodoId(val id: String){
     companion object Factory {
         fun newId(): TodoId = TodoId(UUID.randomUUID().toString())
+        fun create(originalId: String) = TodoId(originalId)
     }
 }
