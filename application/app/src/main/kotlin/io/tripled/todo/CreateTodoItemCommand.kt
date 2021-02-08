@@ -5,7 +5,7 @@ import io.tripled.todo.domain.TodoItemsRepository
 
 class CreateTodoItemCommand(private val todoItemRepository: TodoItemsRepository) : CreateTodoItem {
     override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
-        val createdTodoItem = TodoItem(request.title, request.description)
+        val createdTodoItem = TodoItem.new(request.title, request.description)
 
         todoItemRepository.save(createdTodoItem)
 

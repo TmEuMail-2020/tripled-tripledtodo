@@ -1,5 +1,6 @@
 package io.tripled.todo.fakes
 
+import io.tripled.todo.TodoId
 import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.domain.TodoItemsRepository
 
@@ -15,7 +16,9 @@ class FakeTodoItemsRepository : TestTodoItems, TodoItemsRepository {
             _assumeExisting = value
         }
 
-    override fun save(createdTodoItem: TodoItem) {
-        _lastSaved = createdTodoItem.snapshot
+    override fun save(todoItem: TodoItem) {
+        _lastSaved = todoItem.snapshot
     }
+
+    override fun find(todoId: TodoId) = TodoItem(_assumeExisting)
 }
