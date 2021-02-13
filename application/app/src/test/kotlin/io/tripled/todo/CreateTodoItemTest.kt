@@ -1,20 +1,13 @@
 package io.tripled.todo
 
-import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.core.test.AssertionMode
 import io.kotest.matchers.shouldBe
 import io.tripled.todo.domain.TodoItem
-import io.tripled.todo.fakes.FakeTodoItems
-import io.tripled.todo.fakes.TestTodoItems
+import io.tripled.todo.testing.TodoItemTest
 
 
-class CreateTodoItemTest : BehaviorSpec() {
-    init {
-        assertions = AssertionMode.Error
+class CreateTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
 
-        val fakeTodoItemRepository = FakeTodoItems()
-        val testTodoItems: TestTodoItems = fakeTodoItemRepository
-        val createTodoItem: CreateTodoItem = CreateTodoItemCommand(fakeTodoItemRepository)
+        val createTodoItem: CreateTodoItem = CreateTodoItemCommand(fakeTodoItems)
 
         given("A title and description of a todo item") {
             val title = "Painting"
@@ -32,5 +25,4 @@ class CreateTodoItemTest : BehaviorSpec() {
                 }
             }
         }
-    }
-}
+    })
