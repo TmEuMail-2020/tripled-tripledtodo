@@ -28,12 +28,12 @@ class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
 
         `when`("Assigning the todo to a non-existing user") {
             userExists = false
-            assignTodoItem.assign(request)
+            val exception = kotlin.runCatching {
+                assignTodoItem.assign(request)
+            }.exceptionOrNull()
 
             then("We verify that the todo item has been assigned") {
-                testTodoItems.lastSaved shouldBe Todos.paintingTheRoom.copy(
-                    assignee = null
-                )
+                exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id}' to a non-existing user 'someoneElse'")
             }
         }
     }
