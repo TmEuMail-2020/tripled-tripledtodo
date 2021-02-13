@@ -23,7 +23,7 @@ class FinishTodoItemTest : BehaviorSpec() {
             val request = FinishTodoItem.Request(todoId)
 
             `when`("Finishing the todo") {
-                finishTodoItem.create(request)
+                finishTodoItem.finish(request)
 
                 then("We verify that the todo item has been finished") {
                     testTodoItems.lastSaved shouldBe TodoItem.Snapshot(todoId,
