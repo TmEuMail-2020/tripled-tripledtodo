@@ -3,6 +3,7 @@ package io.tripled.todo.domain
 import io.tripled.todo.DomainException
 import io.tripled.todo.TodoId
 import io.tripled.todo.UserId
+import io.tripled.todo.domain.TodoItem.Status.*
 
 class TodoItem private constructor(snapshot: Snapshot) {
     companion object Factory {
@@ -10,7 +11,8 @@ class TodoItem private constructor(snapshot: Snapshot) {
             = TodoItem(Snapshot(title = title,
                                 description = description,
                                 id = TodoId.newId(),
-                                status = Status.CREATED))
+                                status = CREATED
+        ))
         fun restoreState(snapshot: Snapshot) = TodoItem(snapshot)
     }
 
@@ -21,11 +23,14 @@ class TodoItem private constructor(snapshot: Snapshot) {
     private var assignee = snapshot.assignee
 
     fun finish() {
-        status = Status.FINISHED
+        status = FINISHED
     }
 
     fun cancel() {
-        status = Status.CANCELLED
+        if (status == FINISHED){
+            throw DomainException("Can't cancel finished todoItem '${this.id.id}'")
+        }
+        status = CANCELLED
     }
 
     fun assign(newAssignee: UserId, userExists: (UserId) -> Boolean) {
