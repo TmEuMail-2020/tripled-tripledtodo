@@ -1,5 +1,6 @@
 package io.tripled.todo.domain
 
+import io.tripled.todo.DomainException
 import io.tripled.todo.TodoId
 import io.tripled.todo.UserId
 
@@ -28,9 +29,10 @@ class TodoItem private constructor(snapshot: Snapshot) {
     }
 
     fun assign(newAssignee: UserId, userExists: (UserId) -> Boolean) {
-        if (userExists.invoke(newAssignee)){
-            assignee = newAssignee
+        if (!userExists.invoke(newAssignee)){
+            throw DomainException("Can't assign todoItem '${this.id.id}' to a non-existing user '${newAssignee.id}'")
         }
+        assignee = newAssignee
     }
 
     enum class Status {

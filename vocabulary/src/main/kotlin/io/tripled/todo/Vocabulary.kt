@@ -14,3 +14,5 @@ data class UserId(val id: String){
         fun existing(originalId: String) = TodoId(originalId)
     }
 }
+
+class DomainException(message: String) : RuntimeException(message)

@@ -33,7 +33,7 @@ class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
             }.exceptionOrNull()
 
             then("We verify that the todo item has been assigned") {
-                exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id}' to a non-existing user 'someoneElse'")
+                exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id.id}' to a non-existing user 'someoneElse'")
             }
         }
     }
