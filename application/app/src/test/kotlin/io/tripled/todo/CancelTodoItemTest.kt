@@ -8,27 +8,27 @@ import io.tripled.todo.fakes.FakeTodoItemsRepository
 import io.tripled.todo.fakes.TestTodoItems
 
 
-class FinishTodoItemTest : BehaviorSpec() {
+class CancelTodoItemTest : BehaviorSpec() {
     init {
         assertions = AssertionMode.Error
 
         val fakeTodoItemRepository = FakeTodoItemsRepository()
         val testTodoItems: TestTodoItems = fakeTodoItemRepository
-        val finishTodoItem: FinishTodoItem = FinishTodoItemCommand(fakeTodoItemRepository)
+        val cancelTodoItem: CancelTodoItem = CancelTodoItemCommand(fakeTodoItemRepository)
 
         given("A todo item that's in progress") {
             val todoId = TodoId.create("abc-123")
             val existingTodoItem = TodoItem.Snapshot(todoId, "title", "description", TodoItem.Status.CREATED)
             fakeTodoItemRepository.assumeExisting = existingTodoItem
-            val request = FinishTodoItem.Request(todoId)
+            val request = CancelTodoItem.Request(todoId)
 
-            `when`("Finishing the todo") {
-                finishTodoItem.create(request)
+            `when`("Cancelling the todo") {
+                cancelTodoItem.create(request)
 
-                then("We verify that the todo item has been finished") {
+                then("We verify that the todo item has been cancelled") {
                     testTodoItems.lastSaved shouldBe TodoItem.Snapshot(todoId,
                                                                         "title", "description",
-                                                                        TodoItem.Status.FINISHED)
+                                                                        TodoItem.Status.CANCELLED)
                 }
             }
         }
