@@ -6,7 +6,7 @@ import io.tripled.todo.domain.TodoItem
 class Todos {
     companion object {
         val paintingTheRoom = TodoItem.Snapshot(
-            TodoId.create("abc-123"),
+            TodoId.existing("abc-123"),
             "Painting",
             "Paint living room white",
             TodoItem.Status.CREATED,

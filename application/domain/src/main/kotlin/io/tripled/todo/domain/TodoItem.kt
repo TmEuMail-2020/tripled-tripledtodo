@@ -1,6 +1,7 @@
 package io.tripled.todo.domain
 
 import io.tripled.todo.TodoId
+import io.tripled.todo.UserId
 
 class TodoItem private constructor(snapshot: Snapshot) {
     companion object Factory {
@@ -16,6 +17,7 @@ class TodoItem private constructor(snapshot: Snapshot) {
     private val title: String = snapshot.title
     private val description: String = snapshot.description
     private var status = snapshot.status
+    private var assignee = snapshot.assignee
 
     fun finish() {
         status = Status.FINISHED
@@ -25,13 +27,23 @@ class TodoItem private constructor(snapshot: Snapshot) {
         status = Status.CANCELLED
     }
 
+    fun assign(newAssignee: UserId) {
+        assignee = newAssignee
+    }
+
     enum class Status {
         CREATED,
         FINISHED,
         CANCELLED
     }
 
-    data class Snapshot(val id: TodoId, val title: String, val description: String, val status: Status)
+    data class Snapshot(val id: TodoId,
+                        val title: String,
+                        val description: String,
+                        val status: Status,
+                        val assignee: UserId? = null)
     val snapshot: Snapshot
-        get() = Snapshot(id, title, description, status)
+        get() = Snapshot(id, title,
+                         description, status,
+                         assignee)
 }
