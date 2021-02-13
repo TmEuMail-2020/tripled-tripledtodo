@@ -20,5 +20,5 @@ class FakeTodoItemsRepository : TestTodoItems, TodoItemsRepository {
         _lastSaved = todoItem.snapshot
     }
 
-    override fun find(todoId: TodoId) = TodoItem(_assumeExisting)
+    override fun find(todoId: TodoId) = TodoItem.restoreState(_assumeExisting)
 }

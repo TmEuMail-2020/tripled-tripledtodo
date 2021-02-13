@@ -2,14 +2,14 @@ package io.tripled.todo.domain
 
 import io.tripled.todo.TodoId
 
-class TodoItem(snapshot: Snapshot) {
+class TodoItem private constructor(snapshot: Snapshot) {
     companion object Factory {
-        fun new(title: String, description: String)
+        fun createNew(title: String, description: String)
             = TodoItem(Snapshot(title = title,
                                 description = description,
                                 id = TodoId.newId(),
                                 status = Status.CREATED))
-        fun restore(originalId: String) = TodoId(originalId)
+        fun restoreState(snapshot: Snapshot) = TodoItem(snapshot)
     }
 
     val id: TodoId = snapshot.id
