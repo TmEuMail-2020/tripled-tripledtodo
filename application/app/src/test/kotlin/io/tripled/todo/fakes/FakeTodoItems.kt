@@ -2,9 +2,9 @@ package io.tripled.todo.fakes
 
 import io.tripled.todo.TodoId
 import io.tripled.todo.domain.TodoItem
-import io.tripled.todo.domain.TodoItemsRepository
+import io.tripled.todo.domain.TodoItems
 
-class FakeTodoItemsRepository : TestTodoItems, TodoItemsRepository {
+class FakeTodoItems : TestTodoItems, TodoItems {
     private lateinit var _assumeExisting: TodoItem.Snapshot
     private lateinit var _lastSaved: TodoItem.Snapshot
 

@@ -1,12 +1,12 @@
 package io.tripled.todo
 
-import io.tripled.todo.domain.TodoItemsRepository
+import io.tripled.todo.domain.TodoItems
 
-class FinishTodoItemCommand(private val todoItemRepository: TodoItemsRepository) : FinishTodoItem {
+class FinishTodoItemCommand(private val todoItems: TodoItems) : FinishTodoItem {
     override fun finish(request: FinishTodoItem.Request) {
-        val todoItem = todoItemRepository.find(request.todoId)!!
+        val todoItem = todoItems.find(request.todoId)!!
         todoItem.finish()
-        todoItemRepository.save(todoItem)
+        todoItems.save(todoItem)
     }
 
 }
