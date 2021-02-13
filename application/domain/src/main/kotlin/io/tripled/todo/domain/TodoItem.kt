@@ -27,8 +27,10 @@ class TodoItem private constructor(snapshot: Snapshot) {
         status = Status.CANCELLED
     }
 
-    fun assign(newAssignee: UserId) {
-        assignee = newAssignee
+    fun assign(newAssignee: UserId, userExists: (UserId) -> Boolean) {
+        if (userExists.invoke(newAssignee)){
+            assignee = newAssignee
+        }
     }
 
     enum class Status {
