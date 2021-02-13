@@ -1,5 +1,6 @@
 package io.tripled.todo
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
@@ -28,9 +29,9 @@ class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
 
         `when`("Assigning the todo to a non-existing user") {
             userExists = false
-            val exception = kotlin.runCatching {
+            val exception = shouldThrow<DomainException> {
                 assignTodoItem.assign(request)
-            }.exceptionOrNull()
+            }
 
             then("We verify that the todo item has been assigned") {
                 exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id.id}' to a non-existing user 'someoneElse'")
