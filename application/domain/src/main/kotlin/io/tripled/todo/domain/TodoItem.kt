@@ -21,9 +21,14 @@ class TodoItem private constructor(snapshot: Snapshot) {
         status = Status.FINISHED
     }
 
+    fun cancel() {
+        status = Status.CANCELLED
+    }
+
     enum class Status {
         CREATED,
-        FINISHED
+        FINISHED,
+        CANCELLED
     }
 
     data class Snapshot(val id: TodoId, val title: String, val description: String, val status: Status)

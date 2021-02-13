@@ -23,7 +23,7 @@ class CancelTodoItemTest : BehaviorSpec() {
             val request = CancelTodoItem.Request(todoId)
 
             `when`("Cancelling the todo") {
-                cancelTodoItem.create(request)
+                cancelTodoItem.cancel(request)
 
                 then("We verify that the todo item has been cancelled") {
                     testTodoItems.lastSaved shouldBe TodoItem.Snapshot(todoId,
