@@ -11,15 +11,15 @@ class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoIt
     given("A todo item that's in progress") {
         fakeTodoItems.assumeExisting = Todos.paintingTheRoom
         val request = UpdateInformationInTodoItem.Request(Todos.paintingTheRoom.id,
-                                                          "Painting",
+                                                          "Paint living room",
                                                           "Paint living room pink")
 
         `when`("We update the information inside the todo item") {
-            updateInformationInTodoItem.finish(request)
+            updateInformationInTodoItem.updateInformation(request)
 
             then("We verify that the todo item has been updated") {
                 testTodoItems.lastSaved shouldBe Todos.paintingTheRoom.copy(
-                    title = "Painting",
+                    title = "Paint living room",
                     description = "Paint living room pink",
                 )
             }

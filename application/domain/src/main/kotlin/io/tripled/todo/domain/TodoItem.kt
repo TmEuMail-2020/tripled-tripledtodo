@@ -17,8 +17,8 @@ class TodoItem private constructor(snapshot: Snapshot) {
     }
 
     val id: TodoId = snapshot.id
-    private val title: String = snapshot.title
-    private val description: String = snapshot.description
+    private var title: String = snapshot.title
+    private var description: String = snapshot.description
     private var status = snapshot.status
     private var assignee = snapshot.assignee
 
@@ -38,6 +38,12 @@ class TodoItem private constructor(snapshot: Snapshot) {
             throw DomainException("Can't assign todoItem '${this.id.id}' to a non-existing user '${newAssignee.id}'")
         }
         assignee = newAssignee
+    }
+
+    fun updateInformation(title: String,
+                          description: String) {
+        this.title = title
+        this.description = description
     }
 
     enum class Status {
