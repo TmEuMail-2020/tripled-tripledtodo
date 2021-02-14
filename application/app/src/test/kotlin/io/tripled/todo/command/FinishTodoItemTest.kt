@@ -1,6 +1,8 @@
-package io.tripled.todo
+package io.tripled.todo.command
 
 import io.kotest.matchers.shouldBe
+import io.tripled.todo.command.FinishTodoItem
+import io.tripled.todo.command.FinishTodoItemCommand
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 

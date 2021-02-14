@@ -1,7 +1,9 @@
-package io.tripled.todo
+package io.tripled.todo.command
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import io.tripled.todo.DomainException
+import io.tripled.todo.UserId
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
