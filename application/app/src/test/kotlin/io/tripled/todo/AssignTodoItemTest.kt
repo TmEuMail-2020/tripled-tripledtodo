@@ -7,17 +7,18 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
-    var userExists = true
     val assignTodoItem: AssignTodoItem = AssignTodoItemCommand(fakeTodoItems) {
-        (_) -> userExists
+        (userId) -> when(userId){
+            "someoneElse" -> true
+            else -> false
+        }
     }
 
     given("A todo item that's in progress") {
         testTodoItems.assumeExisting = Todos.paintingTheRoom
-        val request = AssignTodoItem.Request(Todos.paintingTheRoom.id, UserId("someoneElse"))
 
         `when`("Assigning the todo to an existing user") {
-            userExists = true
+            val request = AssignTodoItem.Request(Todos.paintingTheRoom.id, UserId("someoneElse"))
             assignTodoItem.assign(request)
 
             then("We verify that the todo item has been assigned") {
@@ -28,13 +29,14 @@ class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
         }
 
         `when`("Assigning the todo to a non-existing user") {
-            userExists = false
+            val request = AssignTodoItem.Request(Todos.paintingTheRoom.id, UserId("someoneWhoDoesntExist"))
+
             val exception = shouldThrow<DomainException> {
                 assignTodoItem.assign(request)
             }
 
             then("We verify that the todo item has been assigned") {
-                exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id.id}' to a non-existing user 'someoneElse'")
+                exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id.id}' to a non-existing user 'someoneWhoDoesntExist'")
             }
         }
     }
