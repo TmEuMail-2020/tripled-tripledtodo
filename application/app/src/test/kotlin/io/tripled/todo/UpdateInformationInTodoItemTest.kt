@@ -37,5 +37,18 @@ class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoIt
                 exception shouldBe DomainException("Can't change todoItem '${Todos.paintingTheRoom.id.id}' it's 'FINISHED'")
             }
         }
+
+
+        `when`("We attempt to update a cancelled todo item") {
+            fakeTodoItems.assumeExisting = Todos.finishedPaintingTheRoom
+
+            val exception = shouldThrow<DomainException> {
+                updateInformationInTodoItem.updateInformation(request)
+            }
+
+            then("It should fail since we don't want them to change anymore") {
+                exception shouldBe DomainException("Can't change todoItem '${Todos.paintingTheRoom.id.id}' it's 'CANCELLED'")
+            }
+        }
     }
 })
