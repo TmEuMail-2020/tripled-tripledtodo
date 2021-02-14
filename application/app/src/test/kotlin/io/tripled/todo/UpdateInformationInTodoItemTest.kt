@@ -40,7 +40,7 @@ class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoIt
 
 
         `when`("We attempt to update a cancelled todo item") {
-            fakeTodoItems.assumeExisting = Todos.finishedPaintingTheRoom
+            fakeTodoItems.assumeExisting = Todos.cancelledPaintingTheRoom
 
             val exception = shouldThrow<DomainException> {
                 updateInformationInTodoItem.updateInformation(request)

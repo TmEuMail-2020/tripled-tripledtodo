@@ -45,6 +45,9 @@ class TodoItem private constructor(snapshot: Snapshot) {
         if (status == FINISHED){
             throw DomainException("Can't change todoItem '${id.id}' it's 'FINISHED'")
         }
+        if (status == CANCELLED){
+            throw DomainException("Can't change todoItem '${id.id}' it's 'CANCELLED'")
+        }
 
         this.title = title
         this.description = description
