@@ -42,11 +42,8 @@ class TodoItem private constructor(snapshot: Snapshot) {
 
     fun updateInformation(title: String,
                           description: String) {
-        if (status == FINISHED){
-            throw DomainException("Can't change todoItem '${id.id}' it's 'FINISHED'")
-        }
-        if (status == CANCELLED){
-            throw DomainException("Can't change todoItem '${id.id}' it's 'CANCELLED'")
+        if (status in listOf(FINISHED, CANCELLED)){
+            throw DomainException("Can't change todoItem '${id.id}' it's '${status.name}'")
         }
 
         this.title = title
