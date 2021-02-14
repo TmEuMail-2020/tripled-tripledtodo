@@ -2,8 +2,9 @@ package io.tripled.todo.domain
 
 import io.tripled.todo.DomainException
 import io.tripled.todo.TodoId
+import io.tripled.todo.TodoItemStatus
 import io.tripled.todo.UserId
-import io.tripled.todo.domain.TodoItem.Status.*
+import io.tripled.todo.TodoItemStatus.*
 
 class TodoItem private constructor(snapshot: Snapshot) {
     companion object Factory {
@@ -50,16 +51,10 @@ class TodoItem private constructor(snapshot: Snapshot) {
         this.description = description
     }
 
-    enum class Status {
-        CREATED,
-        FINISHED,
-        CANCELLED
-    }
-
     data class Snapshot(val id: TodoId,
                         val title: String,
                         val description: String,
-                        val status: Status,
+                        val status: TodoItemStatus,
                         val assignee: UserId? = null)
     val snapshot: Snapshot
         get() = Snapshot(id, title,

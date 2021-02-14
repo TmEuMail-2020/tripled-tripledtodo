@@ -13,6 +13,7 @@ class GetTodoItemQuery(private val todoItems: TodoItems) : GetTodoItem {
                         snapshot.title,
                         snapshot.description,
                         snapshot.assignee,
+                        snapshot.status,
                     )
                 }
         )

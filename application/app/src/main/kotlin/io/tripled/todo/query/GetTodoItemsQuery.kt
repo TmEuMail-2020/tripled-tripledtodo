@@ -11,6 +11,7 @@ class GetTodoItemsQuery(private val todoItems: TodoItems) : GetTodoItems {
                 snapshot.title,
                 snapshot.description,
                 snapshot.assignee,
+                snapshot.status,
             )
         }.toList()
     )

@@ -2,11 +2,12 @@ package io.tripled.todo.query
 
 import io.kotest.matchers.shouldBe
 import io.tripled.todo.TodoId
+import io.tripled.todo.TodoItemStatus
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
-class GetTodoItemsTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
+class GetTodoItemsTest : TodoItemTest({ fakeTodoItems, _ ->
     val getTodoItems: GetTodoItems = GetTodoItemsQuery(fakeTodoItems)
 
     given("Some todo items") {
@@ -23,14 +24,14 @@ class GetTodoItemsTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
                         "Painting",
                         "Paint living room white",
                         null,
-                        //TodoItem.Status.CREATED,
+                        TodoItemStatus.CREATED,
                     ),
                     GetTodoItems.Response.TodoItem(
                         TodoId.existing("xyz-987"),
                         "Cleaning gutter",
                         "Gutters need to be cleaned on the front and back side of the house",
                         null,
-                        //TodoItem.Status.CREATED,
+                        TodoItemStatus.CREATED,
                     ),
                 )
             }

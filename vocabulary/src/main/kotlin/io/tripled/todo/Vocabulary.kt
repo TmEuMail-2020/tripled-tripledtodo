@@ -9,6 +9,12 @@ data class TodoId(val id: String){
     }
 }
 
+enum class TodoItemStatus {
+    CREATED,
+    FINISHED,
+    CANCELLED
+}
+
 data class UserId(val id: String){
     companion object Factory {
         fun existing(originalId: String) = TodoId(originalId)
