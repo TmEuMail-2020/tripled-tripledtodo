@@ -5,3 +5,5 @@ include("vocabulary")
 include("application:api")
 include("application:app")
 include("application:domain")
+
+include("infrastructure:incoming:rest")
