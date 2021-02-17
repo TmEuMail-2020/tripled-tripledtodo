@@ -37,7 +37,7 @@ class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
                 assignTodoItem.assign(request)
             }
 
-            then("We verify that the todo item has been assigned") {
+            then("We verify that the todo item could not be assigned to a user that doesn't exist in our system") {
                 exception shouldBe DomainException("Can't assign todoItem '${Todos.paintingTheRoom.id.id}' to a non-existing user 'someoneWhoDoesntExist'")
             }
         }
