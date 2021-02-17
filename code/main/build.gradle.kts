@@ -10,10 +10,10 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":vocabulary"))
-    implementation(project(":application:api"))
-    implementation(project(":application:app"))
-    implementation(project(":application:domain"))
+    implementation(project(":code:vocabulary"))
+    implementation(project(":code:application:api"))
+    implementation(project(":code:application:app"))
+    implementation(project(":code:application:domain"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

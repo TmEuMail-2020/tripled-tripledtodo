@@ -1,9 +1,9 @@
 rootProject.name = "tasks"
 
-include("main")
-include("vocabulary")
-include("application:api")
-include("application:app")
-include("application:domain")
+include("code:main")
+include("code:vocabulary")
+include("code:application:api")
+include("code:application:app")
+include("code:application:domain")
 
-include("infrastructure:incoming:rest")
+include("code:infrastructure:incoming:rest")

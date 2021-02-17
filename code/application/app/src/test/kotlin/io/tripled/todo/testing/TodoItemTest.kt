@@ -5,7 +5,7 @@ import io.kotest.core.test.AssertionMode
 import io.tripled.todo.fakes.FakeTodoItems
 import io.tripled.todo.fakes.TestTodoItems
 
-abstract class TodoItemTest(body: BehaviorSpec.(FakeTodoItems, TestTodoItems) -> Unit = { fakeTodoItems: FakeTodoItems, testTodoItems: TestTodoItems -> }) : BehaviorSpec() {
+abstract class TodoItemTest(body: BehaviorSpec.(FakeTodoItems, TestTodoItems) -> Unit = { _: FakeTodoItems, _: TestTodoItems -> }) : BehaviorSpec() {
     init {
         assertions = AssertionMode.Error
         val fakeTodoItems = FakeTodoItems()

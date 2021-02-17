@@ -5,5 +5,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":vocabulary"))
+    implementation(project(":code:vocabulary"))
 }
