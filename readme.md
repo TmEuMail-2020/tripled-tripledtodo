@@ -2,7 +2,7 @@
 
 ## Background
 
-The new big shot middle manager at Bargenta Incorporated got tasked with improving the efficiency of the employees.
+The new big shot middle manager at BigBank Incorporated got tasked with improving the efficiency of the employees.
 He doesn't trust the employees what so ever. And he wants to micromanage each and every second of their time.
 His vision is that there are very clear `tasks` that the resources need to complete.
 They also can't just create tasks themself for anything and just work on that, he wants to approve tasks to keep everything under control.
@@ -14,7 +14,7 @@ The name of this grandiose project: `Zira next-gen 2020`
 
 ## This is where you come in
 
-In the past they had some software projects that were outsources to Khronoz.
+In the past they had some software projects that were outsources to "RandomITConsultantsInc".
 The problem is, delivery was slow, and after 1,5 years and the first integrations
 they started talking about things like legacy, big ball of mud, green field rewrite.
 
@@ -33,3 +33,10 @@ We just need the task system, it's not a piece of cake!
 
 ### User story result
 ![event story mapping](user story mapping.png "user story mapping")
+
+### Some notes from development
+#### Event storming command "gaps"
+While an eventstorming brings out the most important commands, some common ones, like the update of certain information might go missing as it is sometimes too obvious to mention if it doesn't have any business side-effects. This is what happened to the Update Information In Todo Item command.
+
+#### Event storming queries
+Another item that will lack in the flow are the queries, the questions you can ask your system and the state that you can return. This is usually backtracked from what is need for the next command and other information that your users need to see. It's needlessly complex to dig out all this information before hand, and is easily fleshed out while working on the api.
