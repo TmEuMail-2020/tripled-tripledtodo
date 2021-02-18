@@ -2,7 +2,7 @@ package io.tripled.todo.infra.rest
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -10,29 +10,38 @@ import io.tripled.todo.TodoId
 import io.tripled.todo.command.CreateTodoItem
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 
 @EnableWebMvc
 @Configuration
-@Import(value = [InfraRestConfig.JacksonWebConfiguration::class])
 class InfraRestConfig : WebMvcConfigurer {
     @Bean
     fun todoItemRestController(createTodoItem: CreateTodoItem) = TodoItemRestController(createTodoItem)
 
-    @Bean
-    fun objectMapper() = ObjectMapper()
+    override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>?>) {
+        converters.add(jackson2HttpMessageConverter())
+    }
 
-    @Configuration
-    class JacksonWebConfiguration constructor(objectMapper: ObjectMapper) {
-        init {
-            objectMapper.registerModule(KotlinModule())
-            val module = SimpleModule()
-            module.addSerializer(TodoId::class.java, TodoIdSerializer())
-            objectMapper.registerModule(module)
-        }
+    @Bean
+    fun jackson2HttpMessageConverter(): MappingJackson2HttpMessageConverter? {
+        val converter = MappingJackson2HttpMessageConverter()
+        val builder = jacksonBuilder()
+        val simpleModule = SimpleModule()
+        simpleModule.addSerializer(TodoId::class.java, TodoIdSerializer())
+        builder.modules(KotlinModule(), simpleModule)
+        converter.objectMapper = builder.build()
+        return converter
+    }
+
+    fun jacksonBuilder(): Jackson2ObjectMapperBuilder {
+        val builder = Jackson2ObjectMapperBuilder()
+        builder.propertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
+        return builder
     }
 
     class TodoIdSerializer : JsonSerializer<TodoId>() {

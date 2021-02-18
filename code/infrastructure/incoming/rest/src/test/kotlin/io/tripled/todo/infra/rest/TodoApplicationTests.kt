@@ -60,7 +60,7 @@ class TodoApplicationTests (
     					}
 					"""))
 				.andDo(print())
-			.andExpect(content().string("{\"id\":{\"id\":\"generated-todo-id\"}}"))
+			.andExpect(content().string("{\"id\":\"generated-todo-id\"}"))
 			.andExpect(status().isCreated)
 
 		assertThat(fakeApp.requestFrom(CreateTodoItem::class)).isEqualTo(
