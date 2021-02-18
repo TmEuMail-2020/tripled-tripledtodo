@@ -15,6 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -45,8 +46,9 @@ class TodoApplicationTests (
 
 		@Bean
 		fun cancelTodoItem() = object : CancelTodoItem {
-			override fun cancel(request: CancelTodoItem.Request)
-				= reqRes(request, CancelTodoItem::class) as Unit
+			override fun cancel(request: CancelTodoItem.Request) {
+				reqRes(request, CancelTodoItem::class)
+			}
 
 		}
 
@@ -86,7 +88,7 @@ class TodoApplicationTests (
 	@Test
 	fun `cancelling a todo item`() {
 		this.mockMvc
-			.perform(post("/api/todo/todo-123/status")
+			.perform(put("/api/todo/todo-123/status")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content("""
     					{
