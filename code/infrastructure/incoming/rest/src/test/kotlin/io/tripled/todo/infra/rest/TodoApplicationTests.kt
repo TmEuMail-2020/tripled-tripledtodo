@@ -83,5 +83,24 @@ class TodoApplicationTests (
 	}
 
 
+	@Test
+	fun `cancelling a todo item`() {
+		this.mockMvc
+			.perform(post("/api/todo/todo-123/status")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content("""
+    					{
+							"value": "cancel"
+    					}
+					"""))
+			.andDo(print())
+			.andExpect(status().isOk)
+
+		assertThat(fakeApp.requestFrom(CancelTodoItem::class)).isEqualTo(
+			CancelTodoItem.Request(
+				TodoId.existing("todo-123")
+			)
+		)
+	}
 
 }
