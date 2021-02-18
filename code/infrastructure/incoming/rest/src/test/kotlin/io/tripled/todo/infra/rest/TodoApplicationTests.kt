@@ -1,6 +1,7 @@
 package io.tripled.todo.infra.rest
 
 import io.tripled.todo.TodoId
+import io.tripled.todo.command.CancelTodoItem
 import io.tripled.todo.command.CreateTodoItem
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -38,10 +39,20 @@ class TodoApplicationTests (
 
 		@Bean
 		fun createTodoItem() = object : CreateTodoItem {
-			override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
-				requests[CreateTodoItem::class] = request
-				return responses[CreateTodoItem::class] as CreateTodoItem.Response
-			}
+			override fun create(request: CreateTodoItem.Request)
+				= reqRes(request, CreateTodoItem::class) as CreateTodoItem.Response
+		}
+
+		@Bean
+		fun cancelTodoItem() = object : CancelTodoItem {
+			override fun cancel(request: CancelTodoItem.Request)
+				= reqRes(request, CancelTodoItem::class) as Unit
+
+		}
+
+		private fun reqRes(request: Any, klass: KClass<*>): Any? {
+			requests[klass] = request
+			return responses[klass]
 		}
 	}
 
@@ -70,5 +81,7 @@ class TodoApplicationTests (
 			)
 		)
 	}
+
+
 
 }
