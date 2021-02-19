@@ -8,13 +8,15 @@ import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
-class AssignTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
-    val assignTodoItem: AssignTodoItem = AssignTodoItemCommand(fakeTodoItems) {
+class AssignTodoItemTest : TodoItemTest<AssignTodoItem>(
+        { testTodoItems -> AssignTodoItemCommand(testTodoItems){
         (userId) -> when(userId){
             "someoneElse" -> true
             else -> false
         }
-    }
+    }},
+        { assignTodoItem, testTodoItems ->
+
 
     given("A todo item that's in progress") {
         testTodoItems.assumeExisting = Todos.paintingTheRoom

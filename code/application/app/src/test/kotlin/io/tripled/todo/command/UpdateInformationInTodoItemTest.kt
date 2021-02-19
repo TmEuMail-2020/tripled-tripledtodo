@@ -7,8 +7,9 @@ import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
-class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
-    val updateInformationInTodoItem: UpdateInformationInTodoItem = UpdateInformationInTodoItemCommand(fakeTodoItems)
+class UpdateInformationInTodoItemTest : TodoItemTest<UpdateInformationInTodoItem>(
+        { todoItems -> UpdateInformationInTodoItemCommand(todoItems) },
+        { updateInformationInTodoItem, testTodoItems ->
 
     given("A todo item that's in progress") {
         val request = UpdateInformationInTodoItem.Request(Todos.paintingTheRoom.id,

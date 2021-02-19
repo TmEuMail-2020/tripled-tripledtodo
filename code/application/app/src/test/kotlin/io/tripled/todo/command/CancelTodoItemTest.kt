@@ -7,8 +7,9 @@ import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
-class CancelTodoItemTest : TodoItemTest({fakeTodoItems, testTodoItems ->
-    val cancelTodoItem: CancelTodoItem = CancelTodoItemCommand(fakeTodoItems)
+class CancelTodoItemTest : TodoItemTest<CancelTodoItem>(
+        { todoItems -> CancelTodoItemCommand(todoItems) },
+        { cancelTodoItem, testTodoItems ->
 
     given("A todo item that's in progress") {
         testTodoItems.assumeExisting = Todos.paintingTheRoom

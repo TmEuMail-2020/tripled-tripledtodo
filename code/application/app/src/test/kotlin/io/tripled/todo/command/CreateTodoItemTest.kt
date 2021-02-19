@@ -7,8 +7,10 @@ import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
-class CreateTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
-    val createTodoItem: CreateTodoItem = CreateTodoItemCommand(fakeTodoItems)
+class CreateTodoItemTest : TodoItemTest<CreateTodoItem>(
+        { todoItems -> CreateTodoItemCommand(todoItems) },
+        { createTodoItem, testTodoItems ->
+
 
     given("A title and description of a todo item") {
         val title = "Painting"
