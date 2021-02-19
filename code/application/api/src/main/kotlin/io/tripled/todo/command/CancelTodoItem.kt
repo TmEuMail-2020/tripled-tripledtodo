@@ -6,5 +6,4 @@ interface CancelTodoItem {
     fun cancel(request: Request)
 
     data class Request(val todoId: TodoId)
-
 }

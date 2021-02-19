@@ -2,6 +2,7 @@ package io.tripled.todo.infra.rest.testing
 
 import io.tripled.todo.command.CancelTodoItem
 import io.tripled.todo.command.CreateTodoItem
+import io.tripled.todo.command.FinishTodoItem
 import io.tripled.todo.infra.rest.InfraRestConfig
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,7 +44,13 @@ class RestTest {
             override fun cancel(request: CancelTodoItem.Request) {
                 reqRes(request, CancelTodoItem::class)
             }
+        }
 
+        @Bean
+        fun finishTodoItem() = object : FinishTodoItem {
+            override fun finish(request: FinishTodoItem.Request) {
+                reqRes(request, FinishTodoItem::class)
+            }
         }
 
         private fun reqRes(request: Any, klass: KClass<*>): Any? {

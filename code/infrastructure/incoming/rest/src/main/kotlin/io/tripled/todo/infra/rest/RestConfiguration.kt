@@ -9,6 +9,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.tripled.todo.TodoId
 import io.tripled.todo.command.CancelTodoItem
 import io.tripled.todo.command.CreateTodoItem
+import io.tripled.todo.command.FinishTodoItem
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
@@ -22,9 +23,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class InfraRestConfig : WebMvcConfigurer {
     @Bean
-    fun todoItemRestController(createTodoItem: CreateTodoItem,
-                               cancelTodoItem: CancelTodoItem)
-                    = TodoItemRestController(createTodoItem, cancelTodoItem)
+    fun todoItemRestController(
+                                createTodoItem: CreateTodoItem,
+                                cancelTodoItem: CancelTodoItem,
+                                finishTodoItem: FinishTodoItem,
+                            )
+                    = TodoItemRestController(createTodoItem, cancelTodoItem, finishTodoItem)
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>?>) {
         converters.add(jackson2HttpMessageConverter())

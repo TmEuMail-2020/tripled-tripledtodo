@@ -5,6 +5,5 @@ import io.tripled.todo.TodoId
 interface FinishTodoItem {
     fun finish(request: Request)
 
-    class Request(val todoId: TodoId)
-
+    data class Request(val todoId: TodoId)
 }
