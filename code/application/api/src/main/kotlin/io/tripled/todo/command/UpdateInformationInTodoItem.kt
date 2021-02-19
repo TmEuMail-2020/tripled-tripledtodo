@@ -5,7 +5,7 @@ import io.tripled.todo.TodoId
 interface UpdateInformationInTodoItem {
     fun updateInformation(request: Request)
 
-    class Request(val todoId: TodoId,
+    data class Request(val todoId: TodoId,
                   val title: String,
                   val description: String)
 }

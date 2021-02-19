@@ -10,6 +10,7 @@ import io.tripled.todo.TodoId
 import io.tripled.todo.command.CancelTodoItem
 import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.command.FinishTodoItem
+import io.tripled.todo.command.UpdateInformationInTodoItem
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
@@ -27,8 +28,12 @@ class InfraRestConfig : WebMvcConfigurer {
                                 createTodoItem: CreateTodoItem,
                                 cancelTodoItem: CancelTodoItem,
                                 finishTodoItem: FinishTodoItem,
+                                updateInformationInTodoItem: UpdateInformationInTodoItem,
                             )
-                    = TodoItemRestController(createTodoItem, cancelTodoItem, finishTodoItem)
+                    = TodoItemRestController(createTodoItem,
+                                             cancelTodoItem,
+                                             finishTodoItem,
+                                             updateInformationInTodoItem)
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>?>) {
         converters.add(jackson2HttpMessageConverter())
