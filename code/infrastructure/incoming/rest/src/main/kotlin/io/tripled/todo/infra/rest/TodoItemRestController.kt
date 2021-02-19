@@ -1,10 +1,8 @@
 package io.tripled.todo.infra.rest
 
 import io.tripled.todo.TodoId
-import io.tripled.todo.command.CancelTodoItem
-import io.tripled.todo.command.CreateTodoItem
-import io.tripled.todo.command.FinishTodoItem
-import io.tripled.todo.command.UpdateInformationInTodoItem
+import io.tripled.todo.UserId
+import io.tripled.todo.command.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -15,6 +13,7 @@ class TodoItemRestController(
     private val cancelTodoItem: CancelTodoItem,
     private val finishTodoItem: FinishTodoItem,
     private val updateInformationInTodoItem: UpdateInformationInTodoItem,
+    private val assignTodoItem: AssignTodoItem,
 ) {
 
     @PostMapping("/api/todo")
@@ -34,6 +33,16 @@ class TodoItemRestController(
 
     data class UpdateInformationRequest(val title: String,
                                         val description: String)
+
+    @PutMapping("/api/todo/{todoId}/assignee")
+    fun assignTodoItem(@PathVariable("todoId") todoId: TodoId,
+                       @RequestBody restRequest: AssignUser)
+        = assignTodoItem.assign(AssignTodoItem.Request(
+                                    todoId,
+                                    restRequest.user,
+                                ))
+
+    data class AssignUser(val user: UserId)
 
     @PutMapping("/api/todo/{todoId}/status")
     fun updateStatus(@PathVariable("todoId") todoId: TodoId,

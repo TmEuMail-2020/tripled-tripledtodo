@@ -1,7 +1,6 @@
 package io.tripled.todo.infra.rest
 
 import io.tripled.todo.TodoId
-import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.command.UpdateInformationInTodoItem
 import io.tripled.todo.infra.rest.testing.RestTest
 import org.assertj.core.api.Assertions.assertThat

@@ -3,8 +3,8 @@ package io.tripled.todo.domain
 import io.tripled.todo.DomainException
 import io.tripled.todo.TodoId
 import io.tripled.todo.TodoItemStatus
-import io.tripled.todo.UserId
 import io.tripled.todo.TodoItemStatus.*
+import io.tripled.todo.UserId
 
 class TodoItem private constructor(snapshot: Snapshot) {
     companion object Factory {
