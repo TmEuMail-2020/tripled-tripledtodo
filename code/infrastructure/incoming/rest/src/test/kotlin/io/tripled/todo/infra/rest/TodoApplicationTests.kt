@@ -84,7 +84,6 @@ class TodoApplicationTests (
 		)
 	}
 
-
 	@Test
 	fun `cancelling a todo item`() {
 		this.mockMvc
@@ -103,6 +102,21 @@ class TodoApplicationTests (
 				TodoId.existing("todo-123")
 			)
 		)
+	}
+
+
+	@Test
+	fun `sending an invalid status to status fails`() {
+		this.mockMvc
+			.perform(put("/api/todo/todo-123/status")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content("""
+    					{
+							"value": "not-a-valid-status"
+    					}
+					"""))
+			.andDo(print())
+			.andExpect(status().isBadRequest)
 	}
 
 }

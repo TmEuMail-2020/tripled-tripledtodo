@@ -4,6 +4,7 @@ import io.tripled.todo.TodoId
 import io.tripled.todo.command.CancelTodoItem
 import io.tripled.todo.command.CreateTodoItem
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,11 +19,15 @@ class TodoItemRestController(
 
     @PutMapping("/api/todo/{todoId}/status")
     fun updateStatus(@PathVariable("todoId") todoId: TodoId,
-                     @RequestBody request: UpdateStatusRequest){
-        when (request.value){
-            "cancel" -> cancelTodoItem.cancel(CancelTodoItem.Request(todoId))
-        }
-    }
+                     @RequestBody request: UpdateStatusRequest)
+        = ResponseEntity<Unit>(
+        when (request.value) {
+            "cancel" -> {
+                cancelTodoItem.cancel(CancelTodoItem.Request(todoId))
+                HttpStatus.OK
+            }
+            else -> HttpStatus.BAD_REQUEST
+        })
 
     data class UpdateStatusRequest(val value: String)
 
