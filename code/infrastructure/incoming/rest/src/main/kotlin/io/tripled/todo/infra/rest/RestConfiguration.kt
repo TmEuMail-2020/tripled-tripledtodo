@@ -43,7 +43,7 @@ class InfraRestConfig : WebMvcConfigurer {
 
     fun jacksonBuilder(): Jackson2ObjectMapperBuilder {
         val builder = Jackson2ObjectMapperBuilder()
-        builder.propertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
+        builder.propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
         return builder
     }
 
