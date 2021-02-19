@@ -16,7 +16,7 @@ class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoIt
                                                           "Paint living room pink")
 
         `when`("We update the information inside the todo item") {
-            fakeTodoItems.assumeExisting = Todos.paintingTheRoom
+            testTodoItems.assumeExisting = Todos.paintingTheRoom
             updateInformationInTodoItem.updateInformation(request)
 
             then("We verify that the todo item has been updated") {
@@ -28,7 +28,7 @@ class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoIt
         }
 
         `when`("We attempt to update a finished todo item") {
-            fakeTodoItems.assumeExisting = Todos.finishedPaintingTheRoom
+            testTodoItems.assumeExisting = Todos.finishedPaintingTheRoom
 
             val exception = shouldThrow<DomainException> {
                 updateInformationInTodoItem.updateInformation(request)
@@ -41,7 +41,7 @@ class UpdateInformationInTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoIt
 
 
         `when`("We attempt to update a cancelled todo item") {
-            fakeTodoItems.assumeExisting = Todos.cancelledPaintingTheRoom
+            testTodoItems.assumeExisting = Todos.cancelledPaintingTheRoom
 
             val exception = shouldThrow<DomainException> {
                 updateInformationInTodoItem.updateInformation(request)

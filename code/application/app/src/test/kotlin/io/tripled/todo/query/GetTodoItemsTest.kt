@@ -7,11 +7,11 @@ import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
-class GetTodoItemsTest : TodoItemTest({ fakeTodoItems, _ ->
+class GetTodoItemsTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
     val getTodoItems: GetTodoItems = GetTodoItemsQuery(fakeTodoItems)
 
     given("Some todo items") {
-        fakeTodoItems.assumeMultipleExisting = listOf(Todos.paintingTheRoom,
+        testTodoItems.assumeMultipleExisting = listOf(Todos.paintingTheRoom,
             Todos.cleaningTheGutter)
 
         `when`("Getting them") {

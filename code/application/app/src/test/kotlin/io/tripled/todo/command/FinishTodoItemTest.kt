@@ -11,7 +11,7 @@ class FinishTodoItemTest : TodoItemTest({ fakeTodoItems, testTodoItems ->
     val finishTodoItem: FinishTodoItem = FinishTodoItemCommand(fakeTodoItems)
 
     given("A todo item that's in progress") {
-        fakeTodoItems.assumeExisting = Todos.paintingTheRoom
+        testTodoItems.assumeExisting = Todos.paintingTheRoom
         val request = FinishTodoItem.Request(Todos.paintingTheRoom.id)
 
         `when`("Finishing the todo") {
