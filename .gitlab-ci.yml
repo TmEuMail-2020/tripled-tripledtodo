@@ -3,9 +3,6 @@ image: adoptopenjdk:15.0.2_7-jdk-hotspot
 stages:
   - build
 
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-
 build:
   stage: build
   script: ./gradlew test
