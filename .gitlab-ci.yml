@@ -2,7 +2,7 @@
 # This is the Gradle build system for JVM applications
 # https://gradle.org/
 # https://github.com/gradle/gradle
-image: ubuntu
+image: adoptopenjdk:15.0.2_7-jdk-hotspot
 
 stages:
     - build
