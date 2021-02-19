@@ -2,12 +2,21 @@ package io.tripled.todo.infra.rest
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonDeserializer
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.JsonSerializer
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.tripled.todo.TodoId
 import io.tripled.todo.UserId
-import io.tripled.todo.command.*
+import io.tripled.todo.command.AssignTodoItem
+import io.tripled.todo.command.CancelTodoItem
+import io.tripled.todo.command.CreateTodoItem
+import io.tripled.todo.command.FinishTodoItem
+import io.tripled.todo.command.UpdateInformationInTodoItem
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
@@ -19,14 +28,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @EnableWebMvc
 @Configuration
-class InfraRestConfig : WebMvcConfigurer {
+class RestConfiguration : WebMvcConfigurer {
     @Bean
     fun todoItemRestController(
-                                createTodoItem: CreateTodoItem,
-                                cancelTodoItem: CancelTodoItem,
-                                finishTodoItem: FinishTodoItem,
-                                updateInformationInTodoItem: UpdateInformationInTodoItem,
-                                assignTodoItem: AssignTodoItem,
+                        createTodoItem: CreateTodoItem,
+                        cancelTodoItem: CancelTodoItem,
+                        finishTodoItem: FinishTodoItem,
+                        updateInformationInTodoItem: UpdateInformationInTodoItem,
+                        assignTodoItem: AssignTodoItem,
                             )
                     = TodoItemRestController(createTodoItem,
                                              cancelTodoItem,

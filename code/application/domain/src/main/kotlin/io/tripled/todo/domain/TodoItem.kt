@@ -3,7 +3,9 @@ package io.tripled.todo.domain
 import io.tripled.todo.DomainException
 import io.tripled.todo.TodoId
 import io.tripled.todo.TodoItemStatus
-import io.tripled.todo.TodoItemStatus.*
+import io.tripled.todo.TodoItemStatus.CANCELLED
+import io.tripled.todo.TodoItemStatus.FINISHED
+import io.tripled.todo.TodoItemStatus.CREATED
 import io.tripled.todo.UserId
 
 class TodoItem private constructor(snapshot: Snapshot) {

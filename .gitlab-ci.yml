@@ -5,5 +5,5 @@ stages:
 
 build:
   stage: build
-  script: ./gradlew test
+  script: ./gradlew detekt test
 

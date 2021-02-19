@@ -8,6 +8,8 @@ plugins {
 	kotlin("jvm") version kotlinVersion apply false
 	kotlin("plugin.spring") version kotlinVersion apply false
 	id("io.spring.dependency-management") version springDependencyManagementVersion
+	id("jacoco")
+	id("io.gitlab.arturbosch.detekt").version("1.16.0-RC1")
 }
 
 allprojects {
@@ -17,7 +19,10 @@ allprojects {
 
 	repositories {
 		mavenCentral()
+		jcenter()
 	}
+
+	apply(plugin = "io.gitlab.arturbosch.detekt")
 
 	tasks.withType<KotlinCompile> {
 		kotlinOptions {

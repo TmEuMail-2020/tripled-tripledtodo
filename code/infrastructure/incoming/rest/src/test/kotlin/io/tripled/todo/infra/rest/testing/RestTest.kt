@@ -1,7 +1,7 @@
 package io.tripled.todo.infra.rest.testing
 
 import io.tripled.todo.command.*
-import io.tripled.todo.infra.rest.InfraRestConfig
+import io.tripled.todo.infra.rest.RestConfiguration
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes =
-                [InfraRestConfig::class,
+                [RestConfiguration::class,
                 RestTest.FakeApplication::class])
 @AutoConfigureMockMvc
 class RestTest {
