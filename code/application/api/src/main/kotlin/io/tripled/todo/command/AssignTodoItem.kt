@@ -6,6 +6,6 @@ import io.tripled.todo.UserId
 interface AssignTodoItem {
     fun assign(request: Request)
 
-    class Request(val todoId: TodoId, val userId: UserId)
+    data class Request(val todoId: TodoId, val userId: UserId)
 
 }
