@@ -5,5 +5,5 @@ stages:
 
 build:
   stage: build
-  script: ./gradlew detekt test
+  script: ./gradlew detekt test jacocoTestReport
 
