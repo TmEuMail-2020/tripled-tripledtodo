@@ -18,10 +18,10 @@ build:
 pages:
   stage: docs
   script:
-    - mv docs pages
+    - mv docs public
   artifacts:
     paths:
-      - pages
+      - public
     expire_in: 1 day
   only:
     - master
