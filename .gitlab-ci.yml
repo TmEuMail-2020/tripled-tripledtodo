@@ -8,8 +8,8 @@ build:
   stage: build
   script:
     - ./gradlew detekt jacocoTestReport jacocoTestCoverageVerification jacocoAggregatedReport
-    - 'cat ''build/reports/jacoco/jacocoAggregatedReport/html/index.html'' | sed -n ''s/.*Total[^%]*>\([0-9]*%\).*/Coverage: \1/pg'''
-    - mv build/reports/jacoco/jacocoAggregatedReport/html/ docs
+    - mv build/reports/jacoco/jacocoAggregatedReport/html/* docs
+    - 'cat ''docs/index.html'' | sed -n ''s/.*Total[^%]*>\([0-9]*%\).*/Coverage: \1/pg'''
   coverage: /Coverage[^0-9]*([0-9]{1,3})%/
 
 pages:
