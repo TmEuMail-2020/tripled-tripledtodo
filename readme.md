@@ -3,6 +3,7 @@
 [![coverage report](https://gitlab.rotate-it.be/tripled/triple-todo/badges/master/coverage.svg)](https://gitlab.rotate-it.be/tripled/triple-todo/commits/master)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
 [![Slack Widget](https://img.shields.io/badge/Slack-Opentripled-blue.svg?style=flat-square)](https://tripled-io.slack.com/messages/opentripled)
+[Jacoco report](https://tripled.pages.gitlab.rotate-it.be/triple-todo/)
 
 ## Background
 

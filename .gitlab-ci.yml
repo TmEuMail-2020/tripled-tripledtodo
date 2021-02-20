@@ -5,5 +5,19 @@ stages:
 
 build:
   stage: build
-  script: ./gradlew detekt test jacocoTestReport
+  script:
+    - ./gradlew detekt jacocoTestReport jacocoTestCoverageVerification jacocoAggregatedReport
+    - 'cat ''build/reports/jacoco/jacocoAggregatedReport/html/index.html'' | sed -n ''s/.*Total[^%]*>\([0-9]*%\).*/Coverage: \1/pg'''
+    - mv build/reports/jacoco/jacocoAggregatedReport/html/ docs
+  coverage: /Coverage[^0-9]*([0-9]{1,3})%/
 
+pages:
+  stage: deploy
+  script:
+    - echo 'Nothing to do...'
+  artifacts:
+    paths:
+      - docs
+    expire_in: 1 day
+  only:
+    - master

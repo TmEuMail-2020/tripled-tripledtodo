@@ -14,7 +14,7 @@ interface GetTodoItems {
             val title: String,
             val description: String,
             val assignee: UserId?,
-            val created: TodoItemStatus,
+            val status: TodoItemStatus,
         )
     }
 }

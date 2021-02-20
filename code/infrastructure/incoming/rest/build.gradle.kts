@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.spring")
     id("org.springframework.boot") version springVersion
     id("io.spring.dependency-management")
+    id("jacoco")
 }
 
 dependencies {
@@ -30,5 +31,4 @@ tasks {
     jar {
         enabled = true
     }
-
 }
