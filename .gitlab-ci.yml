@@ -11,6 +11,9 @@ build:
     - mv build/reports/jacoco/jacocoAggregatedReport/html/* docs
     - 'cat ''docs/index.html'' | sed -n ''s/.*Total[^%]*>\([0-9]*%\).*/Coverage: \1/pg'''
   coverage: /Coverage[^0-9]*([0-9]{1,3})%/
+  artifacts:
+    paths:
+      - docs
 
 pages:
   stage: docs
