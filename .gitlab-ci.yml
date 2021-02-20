@@ -18,10 +18,10 @@ build:
 pages:
   stage: docs
   script:
-    - echo 'Nothing to do...'
+    - mv docs pages
   artifacts:
     paths:
-      - docs
+      - pages
     expire_in: 1 day
   only:
     - master
