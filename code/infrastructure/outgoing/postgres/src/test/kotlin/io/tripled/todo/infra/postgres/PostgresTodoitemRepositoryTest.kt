@@ -91,25 +91,6 @@ internal class PostgresTodoitemRepositoryTest {
         ))
     }
 
-    @Test
-    fun someTest() {
-        Database.connect(dataSource)
-
-        transaction {
-            TodoitemsTable.insert {
-                it[todoId] = "todo-123"
-                it[title] = "db title"
-                it[description] = "db description"
-                it[status] = "CREATED"
-                it[userId] = "a user"
-            }
-
-            for (todoItem in TodoitemsTable.selectAll()) {
-                println("${todoItem[TodoitemsTable.todoId]}: ${todoItem[TodoitemsTable.title]}")
-            }
-        }
-    }
-
     @Configuration
     internal class PostgresTestDatabase {
         @Bean
