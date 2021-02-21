@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -19,6 +20,7 @@ import io.tripled.todo.command.FinishTodoItem
 import io.tripled.todo.command.UpdateInformationInTodoItem
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @EnableWebMvc
 @Configuration
+@Import(value = [RestExceptionHandler::class])
 class RestConfiguration : WebMvcConfigurer {
     @Bean
     fun todoItemRestController(
@@ -51,12 +54,17 @@ class RestConfiguration : WebMvcConfigurer {
     fun jackson2HttpMessageConverter(): MappingJackson2HttpMessageConverter? {
         val converter = MappingJackson2HttpMessageConverter()
         val builder = jacksonBuilder()
+        builder.featuresToEnable(SerializationFeature.INDENT_OUTPUT);
+        builder.modules(KotlinModule(), customSerialization())
+        converter.objectMapper = builder.build()
+        return converter
+    }
+
+    private fun customSerialization(): SimpleModule {
         val simpleModule = SimpleModule()
         simpleModule.addSerializer(TodoId::class.java, TodoIdSerializer())
         simpleModule.addDeserializer(UserId::class.java, UserIdDeserializer())
-        builder.modules(KotlinModule(), simpleModule)
-        converter.objectMapper = builder.build()
-        return converter
+        return simpleModule
     }
 
     fun jacksonBuilder(): Jackson2ObjectMapperBuilder {
