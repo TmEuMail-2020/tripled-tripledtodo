@@ -6,7 +6,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
@@ -16,11 +15,16 @@ class CreateTodoItemValidatorTest {
 	@Test
 	fun `a request to create a todo gets validated`() {
 		// given: an invalid request
+		val dummy = object : CreateTodoItem {
+			override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
+				throw RuntimeException("Should not be invoked")
+			}
+		}
 		val request = CreateTodoItem.Request("", "")
 
 		// when
 		try {
-			CreateTodoItemValidator().create(request)
+			CreateTodoItemValidator(dummy).create(request)
 			fail("Should not pass without validation")
 		} catch (ve: ValidationException){
 			assertThat(ve).isEqualTo(
