@@ -1,5 +1,6 @@
 package io.tripled.todo.infra.validation
 
+import io.tripled.todo.ValidationException
 import io.tripled.todo.command.CreateTodoItem
 
 class CreateTodoItemValidator(private val delegatee: CreateTodoItem) : CreateTodoItem {

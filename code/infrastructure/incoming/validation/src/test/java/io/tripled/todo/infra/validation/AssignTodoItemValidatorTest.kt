@@ -2,6 +2,7 @@ package io.tripled.todo.infra.validation
 
 import io.tripled.todo.TodoId
 import io.tripled.todo.UserId
+import io.tripled.todo.ValidationException
 import io.tripled.todo.command.AssignTodoItem
 import io.tripled.todo.infra.validation.configuration.ValidationConfiguration
 import org.assertj.core.api.Assertions.assertThat

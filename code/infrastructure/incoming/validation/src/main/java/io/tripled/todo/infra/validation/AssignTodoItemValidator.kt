@@ -1,5 +1,6 @@
 package io.tripled.todo.infra.validation
 
+import io.tripled.todo.ValidationException
 import io.tripled.todo.command.AssignTodoItem
 import javax.validation.ConstraintViolation
 import javax.validation.constraints.NotBlank

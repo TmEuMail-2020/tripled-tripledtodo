@@ -20,5 +20,3 @@ data class UserId(val id: String){
         fun existing(originalId: String) = UserId(originalId)
     }
 }
-
-class DomainException(message: String) : RuntimeException(message)
