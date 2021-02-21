@@ -62,7 +62,7 @@ class CreateTodoItemValidatorTest {
 
 	}
 
-	class Delegatee(val response: CreateTodoItem.Response) : CreateTodoItem {
+	class Delegatee(private val response: CreateTodoItem.Response) : CreateTodoItem {
 		lateinit var calledWithRequest: CreateTodoItem.Request
 		override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
 			calledWithRequest = request
