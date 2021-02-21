@@ -21,6 +21,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:0.29.1")
     implementation("io.zonky.test:embedded-postgres:1.2.6")
 
+    testImplementation("org.springframework.boot:spring-boot-starter-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
