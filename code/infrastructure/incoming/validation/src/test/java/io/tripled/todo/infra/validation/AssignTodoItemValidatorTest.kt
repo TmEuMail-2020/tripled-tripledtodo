@@ -1,68 +1,68 @@
 package io.tripled.todo.infra.validation
 
 import io.tripled.todo.TodoId
+import io.tripled.todo.UserId
+import io.tripled.todo.command.AssignTodoItem
 import io.tripled.todo.command.CreateTodoItem
+import io.tripled.todo.infra.validation.configuration.ValidationConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.fail
 import org.assertj.core.api.Condition
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.junit.jupiter.SpringExtension
+import javax.validation.Validator
+
+@ExtendWith(SpringExtension::class)
+@SpringBootTest(classes = [ValidationConfiguration::class])
 class AssignTodoItemValidatorTest {
+
+	@Autowired
+	lateinit var validator: Validator
 
 	@Test
 	fun `a request to create a todo gets validated`() {
 		// given: an invalid request
-		val dummy = object : CreateTodoItem {
-			override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
+		val dummy = object : AssignTodoItem {
+			override fun assign(request: AssignTodoItem.Request) {
 				throw RuntimeException("Should not be invoked")
 			}
 		}
-		val request = CreateTodoItem.Request("", "")
+		val request = AssignTodoItem.Request(TodoId.existing(""), UserId.existing(""))
 
 		// when
 		try {
-			CreateTodoItemValidator(dummy).create(request)
+			AssignTodoItemValidator(dummy, validator).assign(request)
 			fail("Should not pass without validation")
 		} catch (ve: ValidationException){
-			assertThat(ve).`is`(
-				containingTheSameValidations(
-					listOf(
-						ValidationException.Validation("title", "should not be empty"),
-						ValidationException.Validation("description", "should not be empty"),
-					)
-				)
+			assertThat(ve.validations).containsExactlyInAnyOrder(
+				ValidationException.Validation("todoId", "must not be blank"),
 			)
 
-			assertThat(ve.validations[0].field).isEqualTo("title")
-			assertThat(ve.validations[0].message).isEqualTo("should not be empty")
+			assertThat(ve.validations[0].field).isEqualTo("todoId")
+			assertThat(ve.validations[0].message).isEqualTo("must not be blank")
 		}
 	}
-
-	private fun containingTheSameValidations(validations: List<ValidationException.Validation>): Condition<Throwable>
-		= Condition<ValidationException>({ ve -> ve.validations == validations }, "same validations") as Condition<Throwable>
-
 	@Test
 	fun `a valid request to create a todo gets validated`() {
 		// given: a valid request
-		val delegatee = Delegatee(CreateTodoItem.Response(TodoId("delegatee-response")))
-		val request = CreateTodoItem.Request("a title", "a description")
+		val delegatee = Delegatee()
+		val request = AssignTodoItem.Request(TodoId.existing("todoId"), UserId.existing("userId"))
 
 		// when
-		val response = CreateTodoItemValidator(delegatee).create(request)
+		AssignTodoItemValidator(delegatee, validator).assign(request)
 
 		// then
 		assertThat(delegatee.calledWithRequest)
-			.isEqualTo(CreateTodoItem.Request("a title", "a description"))
-		assertThat(response)
-			.isEqualTo(CreateTodoItem.Response(TodoId("delegatee-response")))
-
+			.isEqualTo(AssignTodoItem.Request(TodoId.existing("todoId"), UserId.existing("userId")))
 	}
 
-	class Delegatee(private val response: CreateTodoItem.Response) : CreateTodoItem {
-		lateinit var calledWithRequest: CreateTodoItem.Request
-		override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
+	class Delegatee : AssignTodoItem {
+		lateinit var calledWithRequest: AssignTodoItem.Request
+		override fun assign(request: AssignTodoItem.Request){
 			calledWithRequest = request
-			return response
 		}
 	}
-
 }
