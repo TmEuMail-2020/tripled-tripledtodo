@@ -1,0 +1,9 @@
+<changeSet id="1" author="kris">
+    <addColumn tableName="todoitems">
+        <column name="worksfor_company_id" type="int"/>
+        <column name="worksfor_company_id" type="int"/>
+        <column name="worksfor_company_id" type="int"/>
+        <column name="worksfor_company_id" type="int"/>
+        <column name="worksfor_company_id" type="int"/>
+    </addColumn>
+</changeSet>
