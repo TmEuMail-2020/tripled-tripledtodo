@@ -4,6 +4,7 @@ import io.tripled.todo.TodoId
 import io.tripled.todo.command.CreateTodoItem
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.fail
+import org.assertj.core.api.Condition
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -27,15 +28,22 @@ class CreateTodoItemValidatorTest {
 			CreateTodoItemValidator(dummy).create(request)
 			fail("Should not pass without validation")
 		} catch (ve: ValidationException){
-			assertThat(ve).isEqualTo(
-				ValidationException(
-					ValidationException.Validation("title", "should not be empty"),
-					ValidationException.Validation("description", "should not be empty"),
+			assertThat(ve).`is`(
+				containingTheSameValidations(
+					listOf(
+						ValidationException.Validation("title", "should not be empty"),
+						ValidationException.Validation("description", "should not be empty"),
+					)
 				)
 			)
+
+			assertThat(ve.validations[0].field).isEqualTo("title")
+			assertThat(ve.validations[0].message).isEqualTo("should not be empty")
 		}
 	}
 
+	private fun containingTheSameValidations(validations: List<ValidationException.Validation>): Condition<Throwable>
+		= Condition<ValidationException>({ ve -> ve.validations == validations }, "same validations") as Condition<Throwable>
 
 	@Test
 	fun `a valid request to create a todo gets validated`() {

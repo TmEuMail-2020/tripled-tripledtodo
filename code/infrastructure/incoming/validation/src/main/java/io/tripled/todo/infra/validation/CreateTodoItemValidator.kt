@@ -12,7 +12,7 @@ class CreateTodoItemValidator(private val delegatee: CreateTodoItem) : CreateTod
             validations += ValidationException.Validation("description", "should not be empty")
         }
         if (validations.isNotEmpty()){
-            throw ValidationException(*validations.toTypedArray())
+            throw ValidationException(validations)
         }
 
         return delegatee.create(request)
