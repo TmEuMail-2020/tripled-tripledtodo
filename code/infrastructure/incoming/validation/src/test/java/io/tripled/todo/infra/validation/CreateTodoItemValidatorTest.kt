@@ -4,7 +4,6 @@ import io.tripled.todo.TodoId
 import io.tripled.todo.command.CreateTodoItem
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.fail
-import org.assertj.core.api.Condition
 import org.junit.jupiter.api.Test
 
 class CreateTodoItemValidatorTest {
@@ -33,9 +32,6 @@ class CreateTodoItemValidatorTest {
 			assertThat(ve.validations[0].message).isEqualTo("should not be empty")
 		}
 	}
-
-	private fun containingTheSameValidations(validations: List<ValidationException.Validation>): Condition<Throwable>
-			= Condition<ValidationException>({ ve -> ve.validations == validations }, "same validations") as Condition<Throwable>
 
 	@Test
 	fun `a valid request to create a todo gets validated`() {
