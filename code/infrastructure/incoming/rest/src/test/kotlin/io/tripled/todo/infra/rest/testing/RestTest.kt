@@ -1,6 +1,10 @@
 package io.tripled.todo.infra.rest.testing
 
-import io.tripled.todo.command.*
+import io.tripled.todo.command.AssignTodoItem
+import io.tripled.todo.command.CancelTodoItem
+import io.tripled.todo.command.CreateTodoItem
+import io.tripled.todo.command.FinishTodoItem
+import io.tripled.todo.command.UpdateInformationInTodoItem
 import io.tripled.todo.infra.rest.RestConfiguration
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
