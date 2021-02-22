@@ -9,7 +9,7 @@ build:
   script:
     - addgroup --system --gid 1001 build
     - adduser  --system --uid  1001   --group build
-    - su build -s /bin/sh -c ./gradlew detekt jacocoTestReport jacocoTestCoverageVerification jacocoAggregatedReport
+    - su build -s /bin/sh -c ""./gradlew detekt jacocoTestReport jacocoTestCoverageVerification jacocoAggregatedReport"
     - mv build/reports/jacoco/jacocoAggregatedReport/html/* docs
     - 'cat ''docs/index.html'' | sed -n ''s/.*Total[^%]*>\([0-9]*%\).*/Coverage: \1/pg'''
   coverage: /Coverage[^0-9]*([0-9]{1,3})%/
