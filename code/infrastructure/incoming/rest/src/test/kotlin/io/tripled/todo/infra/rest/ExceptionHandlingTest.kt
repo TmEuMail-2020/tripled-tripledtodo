@@ -41,7 +41,7 @@ class ExceptionHandlingTest : RestTest() {
 
 	@Test
 	fun `when receiving a domain exception we get a bad request`() {
-		val result = this.mockMvc
+		this.mockMvc
 			.perform(
 				get("/test/api/domainError")
 			)
