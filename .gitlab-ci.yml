@@ -7,6 +7,9 @@ stages:
 build:
   stage: build
   script:
+    - addgroup --system --gid 1001 build
+    - adduser  --system --uid  1001   --group build
+    - sudo -i build
     - ./gradlew detekt jacocoTestReport jacocoTestCoverageVerification jacocoAggregatedReport
     - mv build/reports/jacoco/jacocoAggregatedReport/html/* docs
     - 'cat ''docs/index.html'' | sed -n ''s/.*Total[^%]*>\([0-9]*%\).*/Coverage: \1/pg'''
