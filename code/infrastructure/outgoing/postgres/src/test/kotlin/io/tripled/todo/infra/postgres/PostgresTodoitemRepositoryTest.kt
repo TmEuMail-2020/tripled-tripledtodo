@@ -36,7 +36,6 @@ internal class PostgresTodoitemRepositoryTest {
         jdbcTemplate.update("delete from todoitems", mapOf<String, Any>())
     }
 
-
     @Test
     fun saveTest(){
         // given

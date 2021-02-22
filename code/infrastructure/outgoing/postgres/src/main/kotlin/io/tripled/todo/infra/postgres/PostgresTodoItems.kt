@@ -31,8 +31,6 @@ class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
         val description = varchar("description", length = descriptionLength)
         val status = varchar("status", length = statusLength)
         val userId = varchar("user_id", idLength)
-
-        override val primaryKey = PrimaryKey(todoId, name = "pk_todo_id")
     }
 
     override fun save(todoItem: TodoItem) {
