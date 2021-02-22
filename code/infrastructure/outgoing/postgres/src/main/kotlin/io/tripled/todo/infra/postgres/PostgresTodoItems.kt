@@ -8,6 +8,7 @@ import io.tripled.todo.domain.TodoItems
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -35,7 +36,19 @@ class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
     }
 
     override fun save(todoItem: TodoItem) {
-        TODO("Not yet implemented")
+        transaction {
+            TodoitemsTable.insert { table ->
+                val snapshot = todoItem.snapshot
+                table[todoId] = snapshot.id.id
+                table[title] = snapshot.title
+                table[description] = snapshot.description
+                table[status] = snapshot.status.name
+
+                snapshot.assignee.let {
+                    table[userId] = it!!.id
+                }
+            }
+        }
     }
 
     override fun find(todoId: TodoId) = transaction {

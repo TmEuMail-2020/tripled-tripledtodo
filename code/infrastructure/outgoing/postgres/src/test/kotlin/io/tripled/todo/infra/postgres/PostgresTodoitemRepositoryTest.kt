@@ -51,11 +51,11 @@ internal class PostgresTodoitemRepositoryTest {
         )
 
         // when
-        val result = todoItems.save(newTodoItem)
+        todoItems.save(newTodoItem)
 
         // then
         val query = jdbcTemplate.query<Any>(
-            "select * from todoitems where todoid = 'todo-123'"
+            "select * from todoitems where todo_id = 'todo-123'"
         ) { rs: ResultSet, _: Int ->
             TodoItem.Snapshot(
                 TodoId.existing(rs.getString("todo_id")),
