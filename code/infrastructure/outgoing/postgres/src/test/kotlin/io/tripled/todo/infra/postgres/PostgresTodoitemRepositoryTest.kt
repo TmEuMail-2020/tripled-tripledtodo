@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.sql.ResultSet
 import javax.sql.DataSource
 
 
@@ -34,6 +35,47 @@ internal class PostgresTodoitemRepositoryTest {
     internal fun setUp() {
         jdbcTemplate.update("delete from todoitems", mapOf<String, Any>())
     }
+
+
+    @Test
+    fun saveTest(){
+        // given
+        val newTodoItem = TodoItem.restoreState(
+            TodoItem.Snapshot(
+                TodoId.existing("todo-123"),
+                "a title",
+                "a description",
+                TodoItemStatus.CREATED,
+                UserId.existing("a user"),
+            )
+        )
+
+        // when
+        val result = todoItems.save(newTodoItem)
+
+        // then
+        val query = jdbcTemplate.query<Any>(
+            "select * from todoitems where todoid = 'todo-123'"
+        ) { rs: ResultSet, _: Int ->
+            TodoItem.Snapshot(
+                TodoId.existing(rs.getString("todo_id")),
+                rs.getString("title"),
+                rs.getString("description"),
+                TodoItemStatus.valueOf(rs.getString("status")),
+                UserId.existing(rs.getString("user_id")),
+            )
+        }.toList()
+
+        assertThat(query.size).isEqualTo(1)
+        assertThat(query[0]).isEqualTo(TodoItem.Snapshot(
+            TodoId.existing("todo-123"),
+            "a title",
+            "a description",
+            TodoItemStatus.CREATED,
+            UserId.existing("a user"),
+        ))
+    }
+
 
     @Test
     fun findTest(){
