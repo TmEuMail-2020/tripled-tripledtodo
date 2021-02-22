@@ -10,11 +10,7 @@ import io.zonky.test.db.postgres.embedded.PreparedDbProvider
 
 import io.zonky.test.db.postgres.embedded.DatabasePreparer
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,17 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import javax.sql.DataSource
-import java.util.HashMap
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
-
-import org.springframework.jdbc.core.namedparam.SqlParameterSource
-
-
 
 
 @ExtendWith(SpringExtension::class)
@@ -65,18 +55,7 @@ internal class PostgresTodoitemRepositoryTest {
     @Test
     fun findTest(){
         // given
-        val namedParameters = MapSqlParameterSource()
-            .addValue("todo_id", "todo-123")
-            .addValue("title", "a title")
-            .addValue("description", "a description")
-            .addValue("status", "CREATED")
-            .addValue("user_id", "a user")
-
-        jdbcTemplate.update(
-            """INSERT INTO todoitems (todo_id, title, description, status, user_id) 
-               VALUES (:todo_id, :title, :description, :status, :user_id)""",
-            namedParameters
-        )
+        insertTestRecord("todo-123", "a title", "a description", "CREATED", "a user")
 
         // when
         val result = todoItems.find(TodoId.existing("todo-123"))
@@ -89,6 +68,47 @@ internal class PostgresTodoitemRepositoryTest {
             TodoItemStatus.CREATED,
             UserId.existing("a user"),
         ))
+    }
+
+    @Test
+    fun getAllTest(){
+        // given
+        insertTestRecord("todo-123", "a title1", "a description1", "CREATED", "a user1")
+        insertTestRecord("todo-456", "a title2", "a description2", "FINISHED", "a user2")
+
+        // when
+        val result = todoItems.getAll()
+
+        // then
+        assertThat(result[0]).isEqualTo(TodoItem.Snapshot(
+            TodoId.existing("todo-123"),
+            "a title1",
+            "a description1",
+            TodoItemStatus.CREATED,
+            UserId.existing("a user1"),
+        ))
+        assertThat(result[1]).isEqualTo(TodoItem.Snapshot(
+            TodoId.existing("todo-456"),
+            "a title2",
+            "a description2",
+            TodoItemStatus.FINISHED,
+            UserId.existing("a user2"),
+        ))
+    }
+
+    private fun insertTestRecord(todoId: String, title: String, description: String, status: String, userId: String) {
+        val namedParameters = MapSqlParameterSource()
+            .addValue("todo_id", todoId)
+            .addValue("title", title)
+            .addValue("description", description)
+            .addValue("status", status)
+            .addValue("user_id", userId)
+
+        jdbcTemplate.update(
+            """INSERT INTO todoitems (todo_id, title, description, status, user_id) 
+                   VALUES (:todo_id, :title, :description, :status, :user_id)""",
+            namedParameters
+        )
     }
 
     @Configuration
