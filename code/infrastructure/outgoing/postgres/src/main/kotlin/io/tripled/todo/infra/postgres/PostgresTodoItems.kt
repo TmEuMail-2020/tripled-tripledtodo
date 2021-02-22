@@ -8,6 +8,7 @@ import io.tripled.todo.domain.TodoItems
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.DataSource
 
@@ -30,28 +31,33 @@ class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
         TODO("Not yet implemented")
     }
 
-    override fun find(todoId: TodoId): TodoItem? {
-        return transaction {
-            TodoitemsTable.select {
-                TodoitemsTable.todoId.eq(todoId.id)
-            }.toList()[0]
-                .let { result ->
-                    TodoItem.Snapshot(
-                        TodoId.existing(result[TodoitemsTable.todoId]),
-                        result[TodoitemsTable.title],
-                        result[TodoitemsTable.description],
-                        TodoItemStatus.valueOf(result[TodoitemsTable.status]),
-                        UserId.existing(result[TodoitemsTable.userId]),
-                    )
-                }
-                .let { s -> TodoItem.restoreState(s) }
-        }
+    override fun find(todoId: TodoId) = transaction {
+        TodoitemsTable.select {
+            TodoitemsTable.todoId.eq(todoId.id)
+        }.toList()[0]
+            .let { result ->
+                TodoItem.Snapshot(
+                    TodoId.existing(result[TodoitemsTable.todoId]),
+                    result[TodoitemsTable.title],
+                    result[TodoitemsTable.description],
+                    TodoItemStatus.valueOf(result[TodoitemsTable.status]),
+                    UserId.existing(result[TodoitemsTable.userId]),
+                )
+            }
+            .let { s -> TodoItem.restoreState(s) }
     }
 
-
-
-    override fun getAll(): List<TodoItem.Snapshot> {
-        TODO("Not yet implemented")
+    override fun getAll() = transaction {
+        TodoitemsTable.selectAll()
+            .map {  result ->
+                TodoItem.Snapshot(
+                    TodoId.existing(result[TodoitemsTable.todoId]),
+                    result[TodoitemsTable.title],
+                    result[TodoitemsTable.description],
+                    TodoItemStatus.valueOf(result[TodoitemsTable.status]),
+                    UserId.existing(result[TodoitemsTable.userId]),
+                )
+            }.toList()
     }
 
 }
