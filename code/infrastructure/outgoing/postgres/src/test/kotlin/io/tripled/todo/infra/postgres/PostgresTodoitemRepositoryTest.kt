@@ -5,43 +5,26 @@ import io.tripled.todo.TodoItemStatus
 import io.tripled.todo.UserId
 import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.domain.TodoItems
+import io.zonky.test.db.postgres.embedded.DatabasePreparer
 import io.zonky.test.db.postgres.embedded.LiquibasePreparer
 import io.zonky.test.db.postgres.embedded.PreparedDbProvider
-
-import io.zonky.test.db.postgres.embedded.DatabasePreparer
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.exposed.sql.Table
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import javax.sql.DataSource
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [PostgresTodoitemRepositoryTest.PostgresTestDatabase::class])
 internal class PostgresTodoitemRepositoryTest {
-
-    object TodoitemsTable : Table() {
-        val todoId = varchar("todo_id", 32)
-        val title = varchar("title", length = 128)
-        val description = varchar("description", length = 4096)
-        val status = varchar("status", length = 128)
-        val userId = varchar("user_id", 32)
-
-        override val primaryKey = PrimaryKey(todoId, name = "pk_todo_id")
-    }
-
-    @Autowired
-    lateinit var dataSource: DataSource
     @Autowired
     lateinit var jdbcTemplate: NamedParameterJdbcTemplate
     @Autowired

@@ -4,14 +4,14 @@ import io.tripled.todo.DomainException
 import io.tripled.todo.ValidationException
 import io.tripled.todo.infra.rest.testing.RestTest
 import org.junit.jupiter.api.Test
+import org.skyscreamer.jsonassert.JSONAssert.assertEquals
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import org.skyscreamer.jsonassert.JSONAssert.assertEquals
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 
 @Import(value = [ExceptionHandlingTest.ErrorsRestTestController::class])

@@ -6,6 +6,7 @@ import io.tripled.todo.UserId
 import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.domain.TodoItems
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -17,12 +18,18 @@ class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
         Database.connect(dataSource)
     }
 
+
     object TodoitemsTable : Table() {
-        val todoId = varchar("todo_id", 32)
-        val title = varchar("title", length = 128)
-        val description = varchar("description", length = 4096)
-        val status = varchar("status", length = 128)
-        val userId = varchar("user_id", 32)
+        private const val idLength = 32
+        private const val titleLength = 128
+        private const val descriptionLength = 4096
+        private const val statusLength = 128
+
+        val todoId = varchar("todo_id", idLength)
+        val title = varchar("title", length = titleLength)
+        val description = varchar("description", length = descriptionLength)
+        val status = varchar("status", length = statusLength)
+        val userId = varchar("user_id", idLength)
 
         override val primaryKey = PrimaryKey(todoId, name = "pk_todo_id")
     }
@@ -35,29 +42,22 @@ class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
         TodoitemsTable.select {
             TodoitemsTable.todoId.eq(todoId.id)
         }.toList()[0]
-            .let { result ->
-                TodoItem.Snapshot(
-                    TodoId.existing(result[TodoitemsTable.todoId]),
-                    result[TodoitemsTable.title],
-                    result[TodoitemsTable.description],
-                    TodoItemStatus.valueOf(result[TodoitemsTable.status]),
-                    UserId.existing(result[TodoitemsTable.userId]),
-                )
-            }
+            .let(::rowToSnapshot)
             .let { s -> TodoItem.restoreState(s) }
     }
 
     override fun getAll() = transaction {
         TodoitemsTable.selectAll()
-            .map {  result ->
-                TodoItem.Snapshot(
-                    TodoId.existing(result[TodoitemsTable.todoId]),
-                    result[TodoitemsTable.title],
-                    result[TodoitemsTable.description],
-                    TodoItemStatus.valueOf(result[TodoitemsTable.status]),
-                    UserId.existing(result[TodoitemsTable.userId]),
-                )
-            }.toList()
+            .map(::rowToSnapshot)
+            .toList()
     }
 
+    private fun rowToSnapshot(result: ResultRow)
+        =  TodoItem.Snapshot(
+                TodoId.existing(result[TodoitemsTable.todoId]),
+                result[TodoitemsTable.title],
+                result[TodoitemsTable.description],
+                TodoItemStatus.valueOf(result[TodoitemsTable.status]),
+                UserId.existing(result[TodoitemsTable.userId]),
+            )
 }
