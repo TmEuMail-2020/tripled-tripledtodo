@@ -12,7 +12,7 @@ plugins {
 dependencies {
     implementation(project(":code:vocabulary"))
     implementation(project(":code:application:api"))
-    implementation(project(":code:application:app"))
+    implementation(project(":code:application:usecases"))
     implementation(project(":code:application:domain"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
