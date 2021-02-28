@@ -32,19 +32,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 @Import(value = [RestExceptionHandler::class])
 class RestConfiguration : WebMvcConfigurer {
-    @Bean
-    fun todoItemRestController(
-                        createTodoItem: CreateTodoItem,
-                        cancelTodoItem: CancelTodoItem,
-                        finishTodoItem: FinishTodoItem,
-                        updateInformationInTodoItem: UpdateInformationInTodoItem,
-                        assignTodoItem: AssignTodoItem,
-                            )
-                    = TodoItemRestController(createTodoItem,
-                                             cancelTodoItem,
-                                             finishTodoItem,
-                                             updateInformationInTodoItem,
-                                             assignTodoItem)
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>?>) {
         converters.add(jackson2HttpMessageConverter())

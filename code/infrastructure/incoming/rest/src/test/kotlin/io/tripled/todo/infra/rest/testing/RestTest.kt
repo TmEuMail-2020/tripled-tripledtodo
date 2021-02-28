@@ -6,6 +6,7 @@ import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.command.FinishTodoItem
 import io.tripled.todo.command.UpdateInformationInTodoItem
 import io.tripled.todo.infra.rest.RestConfiguration
+import io.tripled.todo.infra.rest.TodoItemRestController
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -18,13 +19,33 @@ import kotlin.reflect.KClass
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes =
-                [RestConfiguration::class,
-                RestTest.FakeApplication::class])
+                [
+                    RestConfiguration::class,
+                    RestTest.FakeApplication::class,
+                    RestTest.TestWebConfig::class,
+                ])
 @AutoConfigureMockMvc
 class RestTest {
 
     @Autowired lateinit var mockMvc:MockMvc
     @Autowired lateinit var fakeApp: FakeApplication
+
+    @Configuration
+    class TestWebConfig {
+        @Bean
+        fun todoItemRestController(
+            createTodoItem: CreateTodoItem,
+            cancelTodoItem: CancelTodoItem,
+            finishTodoItem: FinishTodoItem,
+            updateInformationInTodoItem: UpdateInformationInTodoItem,
+            assignTodoItem: AssignTodoItem,
+        )
+                = TodoItemRestController(createTodoItem,
+            cancelTodoItem,
+            finishTodoItem,
+            updateInformationInTodoItem,
+            assignTodoItem)
+    }
 
     @Configuration
     class FakeApplication {
