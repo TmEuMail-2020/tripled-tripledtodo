@@ -6,7 +6,8 @@ import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.command.FinishTodoItem
 import io.tripled.todo.command.UpdateInformationInTodoItem
 import io.tripled.todo.infra.rest.RestConfiguration
-import io.tripled.todo.infra.rest.TodoItemRestController
+import io.tripled.todo.infra.rest.TodoItemRestCommandController
+import io.tripled.todo.infra.rest.TodoItemRestQueryController
 import io.tripled.todo.query.GetTodoItem
 import io.tripled.todo.query.GetTodoItems
 import org.junit.jupiter.api.extension.ExtendWith
@@ -35,21 +36,27 @@ class RestTest {
     @Configuration
     class TestWebConfig {
         @Bean
-        fun todoItemRestController(
+        fun todoItemRestCOMMANDController(
             createTodoItem: CreateTodoItem,
             cancelTodoItem: CancelTodoItem,
             finishTodoItem: FinishTodoItem,
             updateInformationInTodoItem: UpdateInformationInTodoItem,
             assignTodoItem: AssignTodoItem,
-            getTodoItem: GetTodoItem,
-            getTodoItems: GetTodoItems,
         )
-                = TodoItemRestController(
+                = TodoItemRestCommandController(
                     createTodoItem,
                     cancelTodoItem,
                     finishTodoItem,
                     updateInformationInTodoItem,
                     assignTodoItem,
+                )
+
+        @Bean
+        fun todoItemRestQUERYController(
+            getTodoItem: GetTodoItem,
+            getTodoItems: GetTodoItems,
+        )
+                = TodoItemRestQueryController(
                     getTodoItem,
                     getTodoItems,
                 )

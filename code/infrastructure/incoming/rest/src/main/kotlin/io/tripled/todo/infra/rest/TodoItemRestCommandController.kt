@@ -20,14 +20,26 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class TodoItemRestController(
+class TodoItemRestQueryController(
+    private val getTodoItem: GetTodoItem,
+    private val getTodoItems: GetTodoItems,
+){
+    @GetMapping("/api/todo/{todoId}")
+    fun getTodoItem(@PathVariable("todoId") todoId: TodoId)
+            = getTodoItem.get(GetTodoItem.Request(todoId)).todoItem
+
+    @GetMapping("/api/todo/")
+    fun getTodoItems()
+            = getTodoItems.getAll().todoItems
+}
+
+@RestController
+class TodoItemRestCommandController(
     private val createTodoItem: CreateTodoItem,
     private val cancelTodoItem: CancelTodoItem,
     private val finishTodoItem: FinishTodoItem,
     private val updateInformationInTodoItem: UpdateInformationInTodoItem,
     private val assignTodoItem: AssignTodoItem,
-    private val getTodoItem: GetTodoItem,
-    private val getTodoItems: GetTodoItems,
 ) {
 
     @PostMapping("/api/todo")
@@ -75,12 +87,4 @@ class TodoItemRestController(
         })
 
     data class UpdateStatusRequest(val value: String)
-
-    @GetMapping("/api/todo/{todoId}")
-    fun getTodoItem(@PathVariable("todoId") todoId: TodoId)
-        = getTodoItem.get(GetTodoItem.Request(todoId)).todoItem
-
-    @GetMapping("/api/todo/")
-    fun getTodoItems()
-        = getTodoItems.getAll().todoItems
 }
