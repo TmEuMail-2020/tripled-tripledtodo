@@ -6,6 +6,7 @@ import io.tripled.todo.UserId
 import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.infra.rest.testing.RestTest
 import io.tripled.todo.query.GetTodoItem
+import io.tripled.todo.query.GetTodoItems
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
@@ -16,22 +17,32 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-class GetTodoItemTest : RestTest() {
+class GetTodoItemsTest : RestTest() {
 
 	@Test
 	fun `getting a todo item`() {
-		fakeApp.responseFor(GetTodoItem::class,
-			GetTodoItem.Response(GetTodoItem.Response.TodoItem(
-				TodoId.existing("todo-123"),
-				"paint the room",
-				"paint the room in a series of pastel colors",
-				UserId.existing("vincent"),
-				TodoItemStatus.CREATED,
-			)))
+		fakeApp.responseFor(
+			GetTodoItems::class,
+				GetTodoItems.Response(listOf(
+					GetTodoItems.Response.TodoItem(
+						TodoId.existing("todo-123"),
+						"paint the room",
+						"paint the room in a series of pastel colors",
+						UserId.existing("vincent"),
+						TodoItemStatus.CREATED,
+					),
+					GetTodoItems.Response.TodoItem(
+						TodoId.existing("todo-456"),
+						"paint the room 2",
+						"paint the room in a series of bright colors",
+						UserId.existing("mondriaan"),
+						TodoItemStatus.FINISHED,
+					),
+				)))
 
 		val result = this.mockMvc
 			.perform(
-				get("/api/todo/todo-123")
+				get("/api/todo/")
 					.contentType(MediaType.APPLICATION_JSON_VALUE)
 			)
 			.andDo(print())
@@ -40,7 +51,7 @@ class GetTodoItemTest : RestTest() {
 
 		val content: String = result.response.contentAsString
 		assertEquals(
-			content, """{
+			content, """[{
 					  "todo_item" : {
 						"id" : "todo-123",
 						"title" : "paint the room",
@@ -48,7 +59,15 @@ class GetTodoItemTest : RestTest() {
 						"assignee" : "vincent",
 						"status" : "CREATED"
 					  }
-					}""", false
+					},{
+					  "todo_item" : {
+						"id" : "todo-456",
+						"title" : "paint the room",
+						"description" : "paint the room in a series of pastel colors",
+						"assignee" : "vincent",
+						"status" : "CREATED"
+					  }
+					}]""", false
 		)
 
 	}
