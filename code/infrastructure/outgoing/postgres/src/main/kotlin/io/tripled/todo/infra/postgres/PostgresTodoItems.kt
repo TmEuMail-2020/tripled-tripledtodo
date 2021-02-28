@@ -14,11 +14,11 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.DataSource
 
-class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
+class PostgresTodoItems(dataSource: DataSource,
+                        private val dispatch: (Any) -> Unit) : TodoItems {
     init {
         Database.connect(dataSource)
     }
-
 
     object TodoitemsTable : Table() {
         private const val idLength = 32
@@ -54,7 +54,7 @@ class PostgresTodoItems(private val dataSource: DataSource) : TodoItems {
             TodoitemsTable.todoId.eq(todoId.id)
         }.toList()[0]
             .let(::rowToSnapshot)
-            .let { s -> TodoItem.restoreState(s) }
+            .let { s -> TodoItem.restoreState(s, dispatch) }
     }
 
     override fun getAll() = transaction {

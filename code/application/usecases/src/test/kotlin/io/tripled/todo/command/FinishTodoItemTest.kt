@@ -6,7 +6,7 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class FinishTodoItemTest : TodoItemTest<FinishTodoItem>(
-        { todoItems ->  FinishTodoItemCommand(todoItems)},
+        { todoItems, _ ->  FinishTodoItemCommand(todoItems)},
         { finishTodoItem, testTodoItems ->
 
     given("A todo item that's in progress") {

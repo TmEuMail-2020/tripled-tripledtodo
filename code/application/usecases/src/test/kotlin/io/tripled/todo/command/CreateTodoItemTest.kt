@@ -1,12 +1,14 @@
 package io.tripled.todo.command
 
 import io.kotest.matchers.shouldBe
+import io.tripled.todo.TodoItemStatus
+import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
 class CreateTodoItemTest : TodoItemTest<CreateTodoItem>(
-        { todoItems -> CreateTodoItemCommand(todoItems) },
+        { todoItems, dispatchEvent -> CreateTodoItemCommand(todoItems, dispatchEvent) },
         { createTodoItem, testTodoItems ->
 
 
@@ -21,10 +23,11 @@ class CreateTodoItemTest : TodoItemTest<CreateTodoItem>(
             then("We verify that the todo item has been saved correctly") {
                 testTodoItems.lastSaved shouldBe Todos.paintingTheRoom.copy(id = response.id)
                 testTodoItems.dispatchedEvents shouldBe listOf(
-                    TodoItemCreated(
+                    TodoItem.Events.TodoItemCreated(
                         response.id,
                         "Painting",
                         "Paint living room white",
+                        TodoItemStatus.CREATED,
                     )
                 )
             }

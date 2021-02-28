@@ -8,7 +8,7 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class CancelTodoItemTest : TodoItemTest<CancelTodoItem>(
-        { todoItems -> CancelTodoItemCommand(todoItems) },
+        { todoItems, _ -> CancelTodoItemCommand(todoItems) },
         { cancelTodoItem, testTodoItems ->
 
     given("A todo item that's in progress") {

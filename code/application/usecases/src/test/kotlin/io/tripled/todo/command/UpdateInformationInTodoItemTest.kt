@@ -8,7 +8,7 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class UpdateInformationInTodoItemTest : TodoItemTest<UpdateInformationInTodoItem>(
-        { todoItems -> UpdateInformationInTodoItemCommand(todoItems) },
+        { todoItems, _ -> UpdateInformationInTodoItemCommand(todoItems) },
         { updateInformationInTodoItem, testTodoItems ->
 
     given("A todo item that's in progress") {

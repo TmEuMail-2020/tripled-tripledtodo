@@ -37,7 +37,7 @@ class UseCases {
 	@Bean
 	fun createTodoItem(todoItems: TodoItems) = CrossCuttingConcerns<CreateTodoItem>(
 			{createTodoItem ->  CreateTodoItemValidator(createTodoItem) },
-			CreateTodoItemCommand(todoItems)
+			CreateTodoItemCommand(todoItems){}
 		).command
 
 
@@ -90,5 +90,5 @@ class PostgresTestDatabase {
 	}
 
 	@Bean
-	fun todoItems(dataSource: DataSource) = PostgresTodoItems(dataSource)
+	fun todoItems(dataSource: DataSource) = PostgresTodoItems(dataSource){}
 }

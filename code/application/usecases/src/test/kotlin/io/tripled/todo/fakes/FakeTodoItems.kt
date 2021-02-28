@@ -10,6 +10,16 @@ class FakeTodoItems : TestTodoItems, TodoItems {
     private lateinit var _assumeExisting: TodoItem.Snapshot
     private lateinit var _lastSaved: TodoItem.Snapshot
     private lateinit var _assumeMultipleExisting: List<TodoItem.Snapshot>
+    private var _dispatchedEvents: MutableList<Any> = mutableListOf()
+
+    override val dispatchedEvents: List<Any>
+        get() = clearWhenReading()
+
+    private fun clearWhenReading(): MutableList<Any> {
+        val result = _dispatchedEvents
+        _dispatchedEvents = mutableListOf()
+        return result
+    }
 
     override val lastSaved: TodoItem.Snapshot
         get() = _lastSaved
@@ -18,6 +28,9 @@ class FakeTodoItems : TestTodoItems, TodoItems {
         set(value) {
             _assumeExisting = value
         }
+
+    fun dispatchEvent(event: Any)
+        = _dispatchedEvents.add(event)
 
     override var assumeMultipleExisting: List<TodoItem.Snapshot>
         get() = TODO("Not yet implemented")
@@ -30,6 +43,6 @@ class FakeTodoItems : TestTodoItems, TodoItems {
         _lastSaved = todoItem.snapshot
     }
 
-    override fun find(todoId: TodoId) = TodoItem.restoreState(_assumeExisting)
+    override fun find(todoId: TodoId) = TodoItem.restoreState(_assumeExisting, ::dispatchEvent)
     override fun getAll() = _assumeMultipleExisting
 }

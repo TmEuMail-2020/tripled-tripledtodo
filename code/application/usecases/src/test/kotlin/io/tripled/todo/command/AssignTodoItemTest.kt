@@ -9,7 +9,7 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class AssignTodoItemTest : TodoItemTest<AssignTodoItem>(
-        { testTodoItems -> AssignTodoItemCommand(testTodoItems){
+        { testTodoItems, _ -> AssignTodoItemCommand(testTodoItems){
         (userId) -> when(userId){
             "someoneElse" -> true
             else -> false

@@ -8,22 +8,37 @@ import io.tripled.todo.TodoItemStatus.CREATED
 import io.tripled.todo.TodoItemStatus.FINISHED
 import io.tripled.todo.UserId
 
-class TodoItem private constructor(snapshot: Snapshot) {
+class TodoItem private constructor(snapshot: Snapshot,
+                                   dispatch: (Any) -> Unit) {
     companion object Factory {
-        fun createNew(title: String, description: String)
+        fun createNew(title: String, description: String, dispatch: (Any) -> Unit)
             = TodoItem(Snapshot(title = title,
                                 description = description,
                                 id = TodoId.newId(),
                                 status = CREATED
-        ))
-        fun restoreState(snapshot: Snapshot) = TodoItem(snapshot)
+        ), dispatch)
+        fun restoreState(snapshot: Snapshot, dispatch: (Any) -> Unit) = TodoItem(snapshot, dispatch)
     }
 
-    val id: TodoId = snapshot.id
-    private var title: String = snapshot.title
-    private var description: String = snapshot.description
+    class Events {
+        data class TodoItemCreated(val id: TodoId,
+                                   val title: String,
+                                   val description: String,
+                                   val status: TodoItemStatus)
+    }
+
+    val id = snapshot.id
+    private var title = snapshot.title
+    private var description = snapshot.description
     private var status = snapshot.status
     private var assignee = snapshot.assignee
+
+    init {
+        dispatch.invoke(Events.TodoItemCreated(id,
+            title,
+            description,
+            status))
+    }
 
     fun finish() {
         status = FINISHED

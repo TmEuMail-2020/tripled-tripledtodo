@@ -9,7 +9,7 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class GetTodoItemTest : TodoItemTest<GetTodoItem>(
-        { todoItems -> GetTodoItemQuery(todoItems) },
+        { todoItems, _ -> GetTodoItemQuery(todoItems) },
         { getTodoItem, testTodoItems ->
 
     given("Some todo items") {
