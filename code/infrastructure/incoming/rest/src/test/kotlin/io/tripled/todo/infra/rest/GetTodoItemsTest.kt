@@ -52,21 +52,17 @@ class GetTodoItemsTest : RestTest() {
 		val content: String = result.response.contentAsString
 		assertEquals(
 			content, """[{
-					  "todo_item" : {
 						"id" : "todo-123",
 						"title" : "paint the room",
 						"description" : "paint the room in a series of pastel colors",
 						"assignee" : "vincent",
 						"status" : "CREATED"
-					  }
 					},{
-					  "todo_item" : {
 						"id" : "todo-456",
-						"title" : "paint the room",
-						"description" : "paint the room in a series of pastel colors",
-						"assignee" : "vincent",
-						"status" : "CREATED"
-					  }
+						"title" : "paint the room 2",
+						"description" : "paint the room in a series of bright colors",
+						"assignee" : "mondriaan",
+						"status" : "FINISHED"
 					}]""", false
 		)
 

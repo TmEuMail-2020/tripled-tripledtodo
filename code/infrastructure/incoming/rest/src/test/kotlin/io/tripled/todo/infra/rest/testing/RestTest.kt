@@ -8,6 +8,7 @@ import io.tripled.todo.command.UpdateInformationInTodoItem
 import io.tripled.todo.infra.rest.RestConfiguration
 import io.tripled.todo.infra.rest.TodoItemRestController
 import io.tripled.todo.query.GetTodoItem
+import io.tripled.todo.query.GetTodoItems
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -41,13 +42,17 @@ class RestTest {
             updateInformationInTodoItem: UpdateInformationInTodoItem,
             assignTodoItem: AssignTodoItem,
             getTodoItem: GetTodoItem,
+            getTodoItems: GetTodoItems,
         )
-                = TodoItemRestController(createTodoItem,
-            cancelTodoItem,
-            finishTodoItem,
-            updateInformationInTodoItem,
-            assignTodoItem,
-            getTodoItem)
+                = TodoItemRestController(
+                    createTodoItem,
+                    cancelTodoItem,
+                    finishTodoItem,
+                    updateInformationInTodoItem,
+                    assignTodoItem,
+                    getTodoItem,
+                    getTodoItems,
+                )
     }
 
     @Configuration
@@ -97,8 +102,12 @@ class RestTest {
         fun getTodoItem() = object : GetTodoItem {
             override fun get(request: GetTodoItem.Request): GetTodoItem.Response
                 = reqRes(request, GetTodoItem::class) as GetTodoItem.Response
+        }
 
-
+        @Bean
+        fun getTodoItems() = object : GetTodoItems {
+            override fun getAll(): GetTodoItems.Response
+                = responses[GetTodoItems::class] as GetTodoItems.Response
         }
 
         private fun reqRes(request: Any, klass: KClass<*>): Any? {

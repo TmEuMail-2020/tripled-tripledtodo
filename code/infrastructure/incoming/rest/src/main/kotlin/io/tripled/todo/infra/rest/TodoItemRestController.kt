@@ -8,6 +8,7 @@ import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.command.FinishTodoItem
 import io.tripled.todo.command.UpdateInformationInTodoItem
 import io.tripled.todo.query.GetTodoItem
+import io.tripled.todo.query.GetTodoItems
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,6 +27,7 @@ class TodoItemRestController(
     private val updateInformationInTodoItem: UpdateInformationInTodoItem,
     private val assignTodoItem: AssignTodoItem,
     private val getTodoItem: GetTodoItem,
+    private val getTodoItems: GetTodoItems,
 ) {
 
     @PostMapping("/api/todo")
@@ -77,4 +79,8 @@ class TodoItemRestController(
     @GetMapping("/api/todo/{todoId}")
     fun getTodoItem(@PathVariable("todoId") todoId: TodoId)
         = getTodoItem.get(GetTodoItem.Request(todoId))
+
+    @GetMapping("/api/todo/")
+    fun getTodoItems()
+        = getTodoItems.getAll().todoItems
 }
