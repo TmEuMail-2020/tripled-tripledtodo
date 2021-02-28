@@ -78,7 +78,7 @@ class TodoItemRestController(
 
     @GetMapping("/api/todo/{todoId}")
     fun getTodoItem(@PathVariable("todoId") todoId: TodoId)
-        = getTodoItem.get(GetTodoItem.Request(todoId))
+        = getTodoItem.get(GetTodoItem.Request(todoId)).todoItem
 
     @GetMapping("/api/todo/")
     fun getTodoItems()
