@@ -27,7 +27,7 @@ class ExceptionHandlingTest : RestTest() {
 			.andExpect(status().isBadRequest)
 			.andReturn()
 
-		val content: String = result.getResponse().contentAsString
+		val content: String = result.response.contentAsString
 		assertEquals(content, """[ 
 				{
 				  "field" : "testField1",

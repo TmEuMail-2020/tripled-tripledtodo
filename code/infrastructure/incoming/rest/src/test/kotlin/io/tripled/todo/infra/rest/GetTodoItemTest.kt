@@ -8,6 +8,7 @@ import io.tripled.todo.infra.rest.testing.RestTest
 import io.tripled.todo.query.GetTodoItem
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -27,19 +28,27 @@ class GetTodoItemTest : RestTest() {
 				TodoItemStatus.CREATED,
 			)))
 
-		this.mockMvc
-				.perform(
-					get("/api/todo/todo-123")
-						.contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andDo(print())
-			.andExpect(content().string("""
-    					{
-							"title": "paint the room",
-							"description": "paint the room in a series of pastel colors",
-							"user": "vincent",
-							"status": "CREATED"
-    					}
-					"""))
+		val result = this.mockMvc
+			.perform(
+				get("/api/todo/todo-123")
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+			)
+			.andDo(print())
 			.andExpect(status().isOk)
+			.andReturn()
+
+		val content: String = result.response.contentAsString
+		JSONAssert.assertEquals(
+			content, """{
+					  "todo_item" : {
+						"id" : "todo-123",
+						"title" : "paint the room",
+						"description" : "paint the room in a series of pastel colors",
+						"assignee" : "vincent",
+						"status" : "CREATED"
+					  }
+					}""", false
+		)
+
 	}
 }

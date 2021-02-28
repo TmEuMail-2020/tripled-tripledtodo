@@ -50,6 +50,7 @@ class RestConfiguration : WebMvcConfigurer {
     private fun customSerialization(): SimpleModule {
         val simpleModule = SimpleModule()
         simpleModule.addSerializer(TodoId::class.java, TodoIdSerializer())
+        simpleModule.addSerializer(UserId::class.java, UserIdSerializer())
         simpleModule.addDeserializer(UserId::class.java, UserIdDeserializer())
         return simpleModule
     }
@@ -63,6 +64,16 @@ class RestConfiguration : WebMvcConfigurer {
     class TodoIdSerializer : JsonSerializer<TodoId>() {
         override fun serialize(
             value: TodoId,
+            jgen: JsonGenerator,
+            provider: SerializerProvider
+        ) {
+            jgen.writeString(value.id)
+        }
+    }
+
+    class UserIdSerializer : JsonSerializer<UserId>() {
+        override fun serialize(
+            value: UserId,
             jgen: JsonGenerator,
             provider: SerializerProvider
         ) {
