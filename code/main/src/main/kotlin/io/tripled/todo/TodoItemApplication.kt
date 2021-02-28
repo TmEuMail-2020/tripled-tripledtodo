@@ -11,6 +11,8 @@ import io.tripled.todo.command.UpdateInformationInTodoItemCommand
 import io.tripled.todo.domain.TodoItems
 import io.tripled.todo.infra.postgres.PostgresTodoItems
 import io.tripled.todo.infra.validation.AssignTodoItemValidator
+import io.tripled.todo.query.GetTodoItem
+import io.tripled.todo.query.GetTodoItemQuery
 import io.tripled.todo.user.UserService
 import io.zonky.test.db.postgres.embedded.DatabasePreparer
 import io.zonky.test.db.postgres.embedded.LiquibasePreparer
@@ -44,6 +46,9 @@ class UseCases {
 
 	@Bean
 	fun finishTodoItem(todoItems: TodoItems) = FinishTodoItemCommand(todoItems)
+
+	@Bean
+	fun getTodoItem(todoItems: TodoItems) = GetTodoItemQuery(todoItems)
 
 	@Bean
 	fun assignTodoItem(
