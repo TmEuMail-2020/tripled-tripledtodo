@@ -15,8 +15,8 @@ class FakeTodoItems : TestTodoItems, TodoItems {
     override val dispatchedEvents: List<Any>
         get() = clearWhenReading()
 
-    private fun clearWhenReading(): MutableList<Any> {
-        val result = _dispatchedEvents
+    private fun clearWhenReading(): List<Any> {
+        val result = _dispatchedEvents.toList()
         _dispatchedEvents = mutableListOf()
         return result
     }

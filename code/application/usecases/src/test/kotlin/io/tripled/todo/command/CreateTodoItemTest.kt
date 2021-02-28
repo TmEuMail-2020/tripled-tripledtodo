@@ -22,14 +22,20 @@ class CreateTodoItemTest : TodoItemTest<CreateTodoItem>(
 
             then("We verify that the todo item has been saved correctly") {
                 testTodoItems.lastSaved shouldBe Todos.paintingTheRoom.copy(id = response.id)
-                testTodoItems.dispatchedEvents shouldBe listOf(
-                    TodoItem.Events.TodoItemCreated(
+                val dispatchedEvents = testTodoItems.dispatchedEvents
+                dispatchedEvents shouldBe listOf(
+                    TodoItem.TodoItemCreated(
                         response.id,
                         "Painting",
                         "Paint living room white",
                         TodoItemStatus.CREATED,
                     )
                 )
+                val event = dispatchedEvents[0] as TodoItem.TodoItemCreated
+                event.id shouldBe response.id
+                event.status shouldBe TodoItemStatus.CREATED
+                event.title shouldBe "Painting"
+                event.description shouldBe "Paint living room white"
             }
         }
     }

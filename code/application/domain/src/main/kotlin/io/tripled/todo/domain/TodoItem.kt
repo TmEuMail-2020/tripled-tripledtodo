@@ -9,36 +9,47 @@ import io.tripled.todo.TodoItemStatus.FINISHED
 import io.tripled.todo.UserId
 
 class TodoItem private constructor(snapshot: Snapshot,
-                                   dispatch: (Any) -> Unit) {
+                                   private val dispatch: (Any) -> Unit) {
     companion object Factory {
-        fun createNew(title: String, description: String, dispatch: (Any) -> Unit)
-            = TodoItem(Snapshot(title = title,
-                                description = description,
-                                id = TodoId.newId(),
-                                status = CREATED
-        ), dispatch)
-        fun restoreState(snapshot: Snapshot, dispatch: (Any) -> Unit) = TodoItem(snapshot, dispatch)
+        fun createNew(title: String, description: String, dispatchEvent: (Any) -> Unit)
+            = TodoItem(title,
+                        description,
+                        TodoId.newId(),
+                        CREATED,
+                        dispatchEvent
+                    )
+        fun restoreState(snapshot: Snapshot, dispatchEvent: (Any) -> Unit) = TodoItem(snapshot, dispatchEvent)
     }
 
-    class Events {
-        data class TodoItemCreated(val id: TodoId,
-                                   val title: String,
-                                   val description: String,
-                                   val status: TodoItemStatus)
-    }
+    constructor(title: String,
+                description: String,
+                id: TodoId, status:
+                TodoItemStatus,
+                dispatch: (Any) -> Unit) : this(
+        Snapshot(title = title,
+            description = description,
+            id = id,
+            status = CREATED
+        ), dispatch){
+                dispatch.invoke(TodoItemCreated(id,
+                title,
+                description,
+                status))
+            }
+
+    data class TodoItemCreated(val id: TodoId,
+                               val title: String,
+                               val description: String,
+                               val status: TodoItemStatus)
+
+    data class TodoItemCancelled(val id: TodoId,
+                                 val status: TodoItemStatus)
 
     val id = snapshot.id
     private var title = snapshot.title
     private var description = snapshot.description
     private var status = snapshot.status
     private var assignee = snapshot.assignee
-
-    init {
-        dispatch.invoke(Events.TodoItemCreated(id,
-            title,
-            description,
-            status))
-    }
 
     fun finish() {
         status = FINISHED
@@ -49,6 +60,7 @@ class TodoItem private constructor(snapshot: Snapshot,
             throw DomainException("Can't cancel finished todoItem '${this.id.id}'")
         }
         status = CANCELLED
+        dispatch.invoke(TodoItemCancelled(id, status))
     }
 
     fun assign(newAssignee: UserId, userExists: (UserId) -> Boolean) {

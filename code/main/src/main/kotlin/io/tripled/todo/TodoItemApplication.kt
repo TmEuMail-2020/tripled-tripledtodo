@@ -7,6 +7,7 @@ import io.tripled.todo.command.CreateTodoItem
 import io.tripled.todo.command.CreateTodoItemCommand
 import io.tripled.todo.command.FinishTodoItemCommand
 import io.tripled.todo.command.UpdateInformationInTodoItemCommand
+import io.tripled.todo.domain.Events
 import io.tripled.todo.domain.TodoItems
 import io.tripled.todo.infra.postgres.PostgresTodoItems
 import io.tripled.todo.infra.validation.AssignTodoItemValidator
@@ -35,9 +36,10 @@ fun main(vararg args: String) {
 class UseCases {
 
 	@Bean
-	fun createTodoItem(todoItems: TodoItems) = CrossCuttingConcerns<CreateTodoItem>(
+	fun createTodoItem(todoItems: TodoItems, eventDispatcher: Events)
+		= CrossCuttingConcerns<CreateTodoItem>(
 			{createTodoItem ->  CreateTodoItemValidator(createTodoItem) },
-			CreateTodoItemCommand(todoItems){}
+			CreateTodoItemCommand(todoItems, eventDispatcher::dispatchEvent)
 		).command
 
 
@@ -90,5 +92,12 @@ class PostgresTestDatabase {
 	}
 
 	@Bean
-	fun todoItems(dataSource: DataSource) = PostgresTodoItems(dataSource){}
+	fun todoItems(dataSource: DataSource, eventDispatcher: Events)
+		= PostgresTodoItems(dataSource, eventDispatcher::dispatchEvent)
+}
+
+@Configuration
+class DomainEvents {
+	@Bean
+	fun domainEventDispatcher() = DomainEventDispatcher()
 }
