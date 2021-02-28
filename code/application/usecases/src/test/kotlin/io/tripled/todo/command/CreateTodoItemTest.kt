@@ -20,6 +20,13 @@ class CreateTodoItemTest : TodoItemTest<CreateTodoItem>(
 
             then("We verify that the todo item has been saved correctly") {
                 testTodoItems.lastSaved shouldBe Todos.paintingTheRoom.copy(id = response.id)
+                testTodoItems.dispatchedEvents shouldBe listOf(
+                    TodoItemCreated(
+                        response.id,
+                        "Painting",
+                        "Paint living room white",
+                    )
+                )
             }
         }
     }
