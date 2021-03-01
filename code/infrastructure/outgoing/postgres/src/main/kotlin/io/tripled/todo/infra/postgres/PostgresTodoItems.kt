@@ -15,7 +15,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.DataSource
 
 class PostgresTodoItems(dataSource: DataSource,
-                        private val dispatch: (Any) -> Unit) : TodoItems {
+                        private val creator: (TodoItem.Snapshot) -> TodoItem) : TodoItems {
     init {
         Database.connect(dataSource)
     }
@@ -54,7 +54,7 @@ class PostgresTodoItems(dataSource: DataSource,
             TodoitemsTable.todoId.eq(todoId.id)
         }.toList()[0]
             .let(::rowToSnapshot)
-            .let { s -> TodoItem.restoreState(s, dispatch) }
+            .let { s -> creator(s) }
     }
 
     override fun getAll() = transaction {

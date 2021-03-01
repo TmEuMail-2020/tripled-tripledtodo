@@ -74,7 +74,7 @@ class UseCases {
 
 	@Bean
 	fun updateInformationInTodoItem(todoItems: TodoItems)
-	= UpdateInformationInTodoItemCommand(todoItems)
+		= UpdateInformationInTodoItemCommand(todoItems)
 
 	class CrossCuttingConcerns<T>(private val validator: (command: T) -> T,
 								  private val commandImpl: T) {
@@ -92,12 +92,15 @@ class PostgresTestDatabase {
 	}
 
 	@Bean
-	fun todoItems(dataSource: DataSource, eventDispatcher: Events)
-		= PostgresTodoItems(dataSource, eventDispatcher::dispatchEvent)
+	fun todoItems(dataSource: DataSource, todoItemCreator: TodoItemCreator)
+		= PostgresTodoItems(dataSource, todoItemCreator::create)
 }
 
 @Configuration
-class DomainEvents {
+class DomainWiring {
 	@Bean
 	fun domainEventDispatcher() = DomainEventDispatcher()
+
+	@Bean
+	fun todoItemCreator(eventDispatcher: Events) = TodoItemCreator(eventDispatcher::dispatchEvent)
 }

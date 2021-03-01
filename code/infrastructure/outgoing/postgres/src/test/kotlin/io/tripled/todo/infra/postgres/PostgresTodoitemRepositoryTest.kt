@@ -147,6 +147,8 @@ internal class PostgresTodoitemRepositoryTest {
         fun jdbcTemplate(dataSource: DataSource) = NamedParameterJdbcTemplate(dataSource)
 
         @Bean
-        fun todoItems(dataSource: DataSource) = PostgresTodoItems(dataSource){}
+        fun todoItems(dataSource: DataSource) = PostgresTodoItems(dataSource){
+            TodoItem.restoreState(it) {}
+        }
     }
 }
