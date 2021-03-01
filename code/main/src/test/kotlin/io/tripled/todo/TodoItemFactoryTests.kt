@@ -4,7 +4,7 @@ import io.tripled.todo.domain.TodoItem
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class TodoItemCreatorTests {
+class TodoItemFactoryTests {
 
 	@Test
 	fun dispatchingAnEvent() {
@@ -18,7 +18,7 @@ class TodoItemCreatorTests {
 		)
 
 		// when
-		val todoItem = TodoItemCreator(eventDispatcher::invoke).create(snapshot)
+		val todoItem = TodoItemFactory(eventDispatcher::invoke).create(snapshot)
 
 		// then
 		assertThat(todoItem).isNotNull

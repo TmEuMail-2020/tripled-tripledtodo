@@ -92,8 +92,8 @@ class PostgresTestDatabase {
 	}
 
 	@Bean
-	fun todoItems(dataSource: DataSource, todoItemCreator: TodoItemCreator)
-		= PostgresTodoItems(dataSource, todoItemCreator::create)
+	fun todoItems(dataSource: DataSource, todoItemFactory: TodoItemFactory)
+		= PostgresTodoItems(dataSource, todoItemFactory::create)
 }
 
 @Configuration
@@ -102,5 +102,5 @@ class DomainWiring {
 	fun domainEventDispatcher() = DomainEventDispatcher()
 
 	@Bean
-	fun todoItemCreator(eventDispatcher: Events) = TodoItemCreator(eventDispatcher::dispatchEvent)
+	fun todoItemFactory(eventDispatcher: Events) = TodoItemFactory(eventDispatcher::dispatchEvent)
 }
