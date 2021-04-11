@@ -3,6 +3,7 @@ package io.tripled.todo.domain
 import io.tripled.todo.DomainException
 import io.tripled.todo.TodoId
 import io.tripled.todo.TodoItemStatus
+import io.tripled.todo.TodoItemStatus.ASSIGNED
 import io.tripled.todo.TodoItemStatus.CANCELLED
 import io.tripled.todo.TodoItemStatus.CREATED
 import io.tripled.todo.TodoItemStatus.FINISHED
@@ -31,7 +32,7 @@ class TodoItem private constructor(snapshot: Snapshot,
             id = id,
             status = CREATED
         ), dispatch){
-                dispatch.invoke(TodoItemCreated(id,
+                dispatch(TodoItemCreated(id,
                 title,
                 description,
                 status))
@@ -47,7 +48,7 @@ class TodoItem private constructor(snapshot: Snapshot,
 
     data class TodoItemAssigned(val id: TodoId,
                                 val status: TodoItemStatus,
-                                val assignee: UserId)
+                                val assignee: UserId?)
 
     val id = snapshot.id
     private var title = snapshot.title
@@ -64,14 +65,17 @@ class TodoItem private constructor(snapshot: Snapshot,
             throw DomainException("Can't cancel finished todoItem '${this.id.id}'")
         }
         status = CANCELLED
-        dispatch.invoke(TodoItemCancelled(id, status))
+        dispatch(TodoItemCancelled(id, status))
     }
 
     fun assign(newAssignee: UserId, userExists: (UserId) -> Boolean) {
-        if (!userExists.invoke(newAssignee)){
+        if (!userExists(newAssignee)){
             throw DomainException("Can't assign todoItem '${this.id.id}' to a non-existing user '${newAssignee.id}'")
         }
         assignee = newAssignee
+        status = ASSIGNED
+
+        dispatch(TodoItemAssigned(id, status, assignee))
     }
 
     fun updateInformation(title: String,

@@ -11,7 +11,7 @@ import io.tripled.todo.testing.TodoItemTest
 
 
 class AssignTodoItemTest : TodoItemTest<AssignTodoItem>(
-        { testTodoItems, dispatchEvent -> AssignTodoItemCommand(testTodoItems, dispatchEvent){
+        { testTodoItems, _ -> AssignTodoItemCommand(testTodoItems){
         (userId) -> when(userId){
             "someoneElse" -> true
             else -> false

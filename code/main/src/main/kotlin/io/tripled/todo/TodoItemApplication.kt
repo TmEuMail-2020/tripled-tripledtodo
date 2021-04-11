@@ -63,7 +63,7 @@ class UseCases {
 	)
 	= CrossCuttingConcerns<AssignTodoItem>(
 		{assignTodoItem ->  AssignTodoItemValidator(assignTodoItem, validator) },
-		AssignTodoItemCommand(todoItems, dispatchEvent, userService::exists)
+		AssignTodoItemCommand(todoItems, userService::exists)
 	).command
 
 	@Bean
