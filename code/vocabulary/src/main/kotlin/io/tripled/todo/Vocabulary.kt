@@ -11,8 +11,9 @@ data class TodoId(val id: String){
 
 enum class TodoItemStatus {
     CREATED,
+    ASSIGNED,
     FINISHED,
-    CANCELLED
+    CANCELLED,
 }
 
 data class UserId(val id: String){

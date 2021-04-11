@@ -45,6 +45,10 @@ class TodoItem private constructor(snapshot: Snapshot,
     data class TodoItemCancelled(val id: TodoId,
                                  val status: TodoItemStatus)
 
+    data class TodoItemAssigned(val id: TodoId,
+                                val status: TodoItemStatus,
+                                val assignee: UserId)
+
     val id = snapshot.id
     private var title = snapshot.title
     private var description = snapshot.description
@@ -85,6 +89,7 @@ class TodoItem private constructor(snapshot: Snapshot,
                         val description: String,
                         val status: TodoItemStatus,
                         val assignee: UserId? = null)
+
     val snapshot: Snapshot
         get() = Snapshot(id, title,
                          description, status,

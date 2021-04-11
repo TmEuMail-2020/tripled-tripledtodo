@@ -3,13 +3,15 @@ package io.tripled.todo.command
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.tripled.todo.DomainException
+import io.tripled.todo.TodoItemStatus
 import io.tripled.todo.UserId
+import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
 
 class AssignTodoItemTest : TodoItemTest<AssignTodoItem>(
-        { testTodoItems, _ -> AssignTodoItemCommand(testTodoItems){
+        { testTodoItems, dispatchEvent -> AssignTodoItemCommand(testTodoItems, dispatchEvent){
         (userId) -> when(userId){
             "someoneElse" -> true
             else -> false
@@ -27,8 +29,22 @@ class AssignTodoItemTest : TodoItemTest<AssignTodoItem>(
 
             then("We verify that the todo item has been assigned") {
                 testTodoItems.lastSaved shouldBe Todos.paintingTheRoom.copy(
-                    assignee = UserId("someoneElse")
+                    assignee = UserId("someoneElse"),
+                    status = TodoItemStatus.ASSIGNED,
                 )
+
+                val dispatchedEvents = testTodoItems.dispatchedEvents
+                dispatchedEvents shouldBe listOf(
+                    TodoItem.TodoItemAssigned(
+                        Todos.paintingTheRoom.id,
+                        TodoItemStatus.ASSIGNED,
+                        UserId("someoneElse"),
+                    )
+                )
+                val event = dispatchedEvents[0] as TodoItem.TodoItemAssigned
+                event.id shouldBe Todos.paintingTheRoom.id
+                event.status shouldBe TodoItemStatus.ASSIGNED
+                event.assignee shouldBe UserId("someoneElse")
             }
         }
 
