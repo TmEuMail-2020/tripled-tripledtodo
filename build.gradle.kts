@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	val kotlinVersion = "1.4.30"
+	val kotlinVersion = "1.4.31"
 	val springDependencyManagementVersion = "1.0.10.RELEASE"
 
 	idea
@@ -10,7 +10,7 @@ plugins {
 	kotlin("plugin.spring") version kotlinVersion apply false
 	id("io.spring.dependency-management") version springDependencyManagementVersion
 	id("org.barfuin.gradle.jacocolog") version "1.2.3"
-	id("io.gitlab.arturbosch.detekt").version("1.16.0-RC1")
+	id("io.gitlab.arturbosch.detekt").version("1.16.0")
 }
 
 allprojects {
