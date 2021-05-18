@@ -24,7 +24,7 @@ class TripleDMembersTests {
 
 	companion object {
 		@JvmStatic
-		private fun provideUsers(): Stream<Arguments>? {
+		fun provideUsers(): Stream<Arguments>? {
 			return Stream.of(
 				Arguments.of(UserId.existing("kris"), true),
 				Arguments.of(UserId.existing("robert"), false),

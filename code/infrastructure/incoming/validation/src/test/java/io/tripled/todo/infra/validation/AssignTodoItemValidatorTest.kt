@@ -26,7 +26,7 @@ class AssignTodoItemValidatorTest {
 		// given: an invalid request
 		val dummy = object : AssignTodoItem {
 			override fun assign(request: AssignTodoItem.Request) {
-				throw RuntimeException("Should not be invoked")
+				throw NotImplementedError("Should not be invoked")
 			}
 		}
 		val request = AssignTodoItem.Request(TodoId.existing(""), UserId.existing(""))

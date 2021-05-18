@@ -8,6 +8,7 @@ class TasksApplicationTests {
 
 	@Test
 	fun configuredContextLoads() {
+		println("valid noop, does spring magic")
 	}
 
 	@Test

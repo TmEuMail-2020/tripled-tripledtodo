@@ -90,6 +90,8 @@ class TodoItem private constructor(snapshot: Snapshot,
 
         this.title = title
         this.description = description
+
+        dispatch(TodoItemInformationUpdated(id, title, description))
     }
 
     data class Snapshot(val id: TodoId,

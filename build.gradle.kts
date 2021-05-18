@@ -10,7 +10,7 @@ plugins {
 	kotlin("plugin.spring") version kotlinVersion apply false
 	id("io.spring.dependency-management") version springDependencyManagementVersion
 	id("org.barfuin.gradle.jacocolog") version "1.2.3"
-	id("io.gitlab.arturbosch.detekt").version("1.16.0")
+	id("io.gitlab.arturbosch.detekt").version("1.17.0")
 }
 
 allprojects {
@@ -22,7 +22,7 @@ allprojects {
 		jcenter()
 	}
 
-	apply(plugin = "io.gitlab.arturbosch.detekt")
+	//apply(plugin = "io.gitlab.arturbosch.detekt")
 	apply(plugin = "jacoco")
 
 	tasks.withType<KotlinCompile> {

@@ -14,7 +14,7 @@ class CreateTodoItemValidatorTest {
 		// given: an invalid request
 		val dummy = object : CreateTodoItem {
 			override fun create(request: CreateTodoItem.Request): CreateTodoItem.Response {
-				throw RuntimeException("Should not be invoked")
+				throw NotImplementedError("Should not be invoked")
 			}
 		}
 		val request = CreateTodoItem.Request("", "")
