@@ -3,6 +3,9 @@ package io.tripled.todo.command
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.tripled.todo.DomainException
+import io.tripled.todo.TodoItemStatus
+import io.tripled.todo.UserId
+import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
@@ -25,6 +28,19 @@ class UpdateInformationInTodoItemTest : TodoItemTest<UpdateInformationInTodoItem
                     title = "Paint living room",
                     description = "Paint living room pink",
                 )
+
+                val dispatchedEvents = testTodoItems.dispatchedEvents
+                dispatchedEvents shouldBe listOf(
+                    TodoItem.TodoItemInformationUpdated(
+                        Todos.paintingTheRoom.id,
+                        "Paint living room",
+                        "Paint living room pink",
+                    )
+                )
+                val event = dispatchedEvents[0] as TodoItem.TodoItemInformationUpdated
+                event.id shouldBe Todos.paintingTheRoom.id
+                event.title shouldBe "Paint living room"
+                event.description shouldBe "Paint living room pink"
             }
         }
 
