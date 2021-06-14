@@ -1,6 +1,8 @@
 package io.tripled.todo.command
 
 import io.kotest.matchers.shouldBe
+import io.tripled.todo.TodoItemStatus
+import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.mothers.Todos
 import io.tripled.todo.testing.TodoItemTest
 
@@ -18,6 +20,17 @@ class FinishTodoItemTest : TodoItemTest<FinishTodoItem>(
 
             then("We verify that the todo item has been finished") {
                 testTodoItems.lastSaved shouldBe Todos.finishedPaintingTheRoom
+
+                val dispatchedEvents = testTodoItems.dispatchedEvents
+                dispatchedEvents shouldBe listOf(
+                    TodoItem.TodoItemFinished(
+                        Todos.paintingTheRoom.id,
+                        TodoItemStatus.FINISHED,
+                    )
+                )
+                val event = dispatchedEvents[0] as TodoItem.TodoItemFinished
+                event.id shouldBe Todos.paintingTheRoom.id
+                event.status shouldBe TodoItemStatus.FINISHED
             }
         }
     }

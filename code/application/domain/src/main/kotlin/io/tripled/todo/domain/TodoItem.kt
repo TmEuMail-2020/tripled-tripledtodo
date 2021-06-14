@@ -54,6 +54,9 @@ class TodoItem private constructor(snapshot: Snapshot,
                                 val title: String,
                                 val description: String)
 
+    data class TodoItemFinished(val id: TodoId,
+                                val status: TodoItemStatus)
+
     val id = snapshot.id
     private var title = snapshot.title
     private var description = snapshot.description
