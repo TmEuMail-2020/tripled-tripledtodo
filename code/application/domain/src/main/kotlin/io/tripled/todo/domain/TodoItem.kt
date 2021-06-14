@@ -65,6 +65,7 @@ class TodoItem private constructor(snapshot: Snapshot,
 
     fun finish() {
         status = FINISHED
+        dispatch(TodoItemFinished(id, status))
     }
 
     fun cancel() {
