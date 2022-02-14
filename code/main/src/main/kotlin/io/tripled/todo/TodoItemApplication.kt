@@ -9,19 +9,21 @@ import io.tripled.todo.command.FinishTodoItemCommand
 import io.tripled.todo.command.UpdateInformationInTodoItemCommand
 import io.tripled.todo.domain.Events
 import io.tripled.todo.domain.TodoItems
-import io.tripled.todo.infra.postgres.PostgresTodoItems
+import io.tripled.todo.infra.sqldb.SqlDBTodoItems
 import io.tripled.todo.infra.validation.AssignTodoItemValidator
 import io.tripled.todo.infra.validation.CreateTodoItemValidator
 import io.tripled.todo.query.GetTodoItemQuery
 import io.tripled.todo.query.GetTodoItemsQuery
 import io.tripled.todo.user.UserService
-import io.zonky.test.db.postgres.embedded.DatabasePreparer
-import io.zonky.test.db.postgres.embedded.LiquibasePreparer
-import io.zonky.test.db.postgres.embedded.PreparedDbProvider
+import liquibase.Liquibase
+import liquibase.database.jvm.JdbcConnection
+import liquibase.resource.ClassLoaderResourceAccessor
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType
 import javax.sql.DataSource
 import javax.validation.Validator
 
@@ -86,14 +88,16 @@ class UseCases {
 @Configuration
 class PostgresTestDatabase {
 	@Bean
-	fun datasource(): DataSource {
-		val db: DatabasePreparer = LiquibasePreparer.forClasspathLocation("liquibase/master.xml")
-		return PreparedDbProvider.forPreparer(db).createDataSource()
+	fun dataSource(): DataSource {
+		val builder = EmbeddedDatabaseBuilder()
+		val db = builder.setType(EmbeddedDatabaseType.H2).build()
+		Liquibase("liquibase/master.xml", ClassLoaderResourceAccessor(), JdbcConnection(db.connection)).update("whatever")
+		return db
 	}
 
 	@Bean
 	fun todoItems(dataSource: DataSource, todoItemFactory: TodoItemFactory)
-		= PostgresTodoItems(dataSource, todoItemFactory::create)
+		= SqlDBTodoItems(dataSource, todoItemFactory::create)
 }
 
 @Configuration

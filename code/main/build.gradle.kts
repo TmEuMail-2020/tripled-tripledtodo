@@ -1,7 +1,7 @@
 val kotest_version: String by project
 
 plugins {
-    val springVersion = "2.4.1"
+    val springVersion = "2.6.3"
 
     kotlin("jvm")
     kotlin("plugin.spring")
@@ -23,8 +23,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
-
-    implementation("io.zonky.test:embedded-postgres:1.2.6")
+    implementation("org.liquibase:liquibase-core")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

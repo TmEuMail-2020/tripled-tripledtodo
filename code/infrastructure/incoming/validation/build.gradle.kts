@@ -1,7 +1,7 @@
 val kotest_version: String by project
 
 plugins {
-    val springVersion = "2.4.1"
+    val springVersion = "2.6.3"
 
     kotlin("jvm")
     kotlin("plugin.spring")

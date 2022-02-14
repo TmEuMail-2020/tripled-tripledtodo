@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.JsonSerializer
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.SerializerProvider
@@ -42,7 +43,7 @@ class RestConfiguration : WebMvcConfigurer {
         val converter = MappingJackson2HttpMessageConverter()
         val builder = jacksonBuilder()
         builder.featuresToEnable(SerializationFeature.INDENT_OUTPUT);
-        builder.modules(KotlinModule(), customSerialization())
+        builder.modules(KotlinModule.Builder().build(), customSerialization())
         converter.objectMapper = builder.build()
         return converter
     }
@@ -57,7 +58,7 @@ class RestConfiguration : WebMvcConfigurer {
 
     fun jacksonBuilder(): Jackson2ObjectMapperBuilder {
         val builder = Jackson2ObjectMapperBuilder()
-        builder.propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+        builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
         return builder
     }
 

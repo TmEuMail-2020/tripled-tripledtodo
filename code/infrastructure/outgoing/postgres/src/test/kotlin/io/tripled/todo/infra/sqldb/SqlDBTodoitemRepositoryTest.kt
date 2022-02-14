@@ -1,13 +1,12 @@
-package io.tripled.todo.infra.postgres
+package io.tripled.todo.infra.sqldb
 
 import io.tripled.todo.TodoId
 import io.tripled.todo.TodoItemStatus
 import io.tripled.todo.UserId
 import io.tripled.todo.domain.TodoItem
 import io.tripled.todo.domain.TodoItems
-import io.zonky.test.db.postgres.embedded.DatabasePreparer
-import io.zonky.test.db.postgres.embedded.LiquibasePreparer
-import io.zonky.test.db.postgres.embedded.PreparedDbProvider
+import liquibase.database.jvm.JdbcConnection
+import liquibase.resource.ClassLoaderResourceAccessor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,16 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.sql.ResultSet
 import javax.sql.DataSource
+import liquibase.Liquibase as Liquibase
 
 
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [PostgresTodoitemRepositoryTest.PostgresTestDatabase::class])
-internal class PostgresTodoitemRepositoryTest {
+@SpringBootTest(classes = [SqlDBTodoitemRepositoryTest.TestDatabaseSetup::class])
+internal class SqlDBTodoitemRepositoryTest {
     @Autowired
     lateinit var jdbcTemplate: NamedParameterJdbcTemplate
     @Autowired
@@ -74,7 +77,6 @@ internal class PostgresTodoitemRepositoryTest {
             UserId.existing("a user"),
         ))
     }
-
 
     @Test
     fun findTest(){
@@ -136,18 +138,22 @@ internal class PostgresTodoitemRepositoryTest {
     }
 
     @Configuration
-    internal class PostgresTestDatabase {
+    @Import
+    internal class TestDatabaseSetup {
+
         @Bean
-        fun datasource(): DataSource {
-            val db: DatabasePreparer = LiquibasePreparer.forClasspathLocation("liquibase/master.xml")
-            return PreparedDbProvider.forPreparer(db).createDataSource()
+        fun dataSource(): DataSource {
+            val builder = EmbeddedDatabaseBuilder()
+            val db = builder.setType(EmbeddedDatabaseType.H2).build()
+            Liquibase("liquibase/master.xml", ClassLoaderResourceAccessor(), JdbcConnection(db.connection)).update("whatever")
+            return db
         }
 
         @Bean
         fun jdbcTemplate(dataSource: DataSource) = NamedParameterJdbcTemplate(dataSource)
 
         @Bean
-        fun todoItems(dataSource: DataSource) = PostgresTodoItems(dataSource){
+        fun todoItems(dataSource: DataSource) = SqlDBTodoItems(dataSource){
             TodoItem.restoreState(it) {}
         }
     }

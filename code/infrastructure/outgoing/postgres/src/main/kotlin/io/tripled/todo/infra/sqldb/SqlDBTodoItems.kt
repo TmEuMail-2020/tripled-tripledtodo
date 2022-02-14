@@ -1,4 +1,4 @@
-package io.tripled.todo.infra.postgres
+package io.tripled.todo.infra.sqldb
 
 import io.tripled.todo.TodoId
 import io.tripled.todo.TodoItemStatus
@@ -14,8 +14,8 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.DataSource
 
-class PostgresTodoItems(dataSource: DataSource,
-                        private val creator: (TodoItem.Snapshot) -> TodoItem) : TodoItems {
+class SqlDBTodoItems(dataSource: DataSource,
+                     private val creator: (TodoItem.Snapshot) -> TodoItem) : TodoItems {
     init {
         Database.connect(dataSource)
     }
