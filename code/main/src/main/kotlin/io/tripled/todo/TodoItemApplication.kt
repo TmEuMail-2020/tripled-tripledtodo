@@ -86,7 +86,7 @@ class UseCases {
 }
 
 @Configuration
-class PostgresTestDatabase {
+class SqlTestDatabase {
 	@Bean
 	fun dataSource(): DataSource {
 		val builder = EmbeddedDatabaseBuilder()

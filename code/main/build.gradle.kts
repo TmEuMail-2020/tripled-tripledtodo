@@ -18,7 +18,7 @@ dependencies {
     implementation(project(":code:infrastructure:incoming:rest"))
     implementation(project(":code:infrastructure:incoming:validation"))
 
-    implementation(project(":code:infrastructure:outgoing:postgres"))
+    implementation(project(":code:infrastructure:outgoing:sqldb"))
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-validation")

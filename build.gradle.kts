@@ -9,7 +9,7 @@ plugins {
 	kotlin("jvm") version kotlinVersion apply false
 	kotlin("plugin.spring") version kotlinVersion apply false
 	id("io.spring.dependency-management") version springDependencyManagementVersion
-	id("org.barfuin.gradle.jacocolog") version "2.0.0"
+	id("org.barfuin.gradle.jacocolog") version "1.2.3"
 	id("io.gitlab.arturbosch.detekt").version("1.17.0")
 }
 
