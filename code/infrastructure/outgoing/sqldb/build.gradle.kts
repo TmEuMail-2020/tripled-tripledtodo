@@ -1,15 +1,3 @@
-val kotest_version: String by project
-
-plugins {
-    val springVersion = "2.6.3"
-
-    kotlin("jvm")
-    kotlin("plugin.spring")
-    id("org.springframework.boot") version springVersion
-    id("io.spring.dependency-management")
-    id("jacoco")
-}
-
 dependencies {
     implementation(project(":code:vocabulary"))
     implementation(project(":code:application:domain"))
@@ -24,15 +12,5 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
-}
-
-tasks {
-    bootJar {
-        enabled = false
-    }
-
-    jar {
-        enabled = true
     }
 }

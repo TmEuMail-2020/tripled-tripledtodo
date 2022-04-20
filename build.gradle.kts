@@ -1,16 +1,20 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-	val kotlinVersion = "1.6.10"
+	val kotlinVersion = "1.6.20"
 	val springDependencyManagementVersion = "1.0.11.RELEASE"
 
-	idea
-	jacoco
-	kotlin("jvm") version kotlinVersion apply false
-	kotlin("plugin.spring") version kotlinVersion apply false
+	kotlin("jvm") version kotlinVersion
+	kotlin("plugin.spring") version kotlinVersion
+	id("org.springframework.boot") version "2.6.6"
 	id("io.spring.dependency-management") version springDependencyManagementVersion
-	id("org.barfuin.gradle.jacocolog") version "1.2.3"
-	id("io.gitlab.arturbosch.detekt").version("1.17.0")
+
+	id("org.barfuin.gradle.jacocolog") version "2.0.0"
+	id("io.gitlab.arturbosch.detekt") version "1.17.0"
 }
 
 allprojects {
@@ -21,8 +25,26 @@ allprojects {
 		mavenCentral()
 	}
 
-	//apply(plugin = "io.gitlab.arturbosch.detekt")
-	apply(plugin = "jacoco")
+	apply {
+		plugin("io.spring.dependency-management")
+		plugin("org.jetbrains.kotlin.plugin.spring")
+		plugin("kotlin")
+		plugin("jacoco")
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+		}
+	}
+
+	val kotest_version: String by project
+
+	dependencies {
+		testImplementation("io.kotest:kotest-runner-junit5:$kotest_version")
+		testImplementation("io.kotest:kotest-assertions-core:$kotest_version")
+		testImplementation("io.kotest:kotest-property:$kotest_version")
+	}
 
 	tasks.withType<KotlinCompile> {
 		sourceCompatibility = JavaVersion.VERSION_17.toString()
@@ -36,6 +58,10 @@ allprojects {
 		}
 	}
 
+	tasks.withType<BootJar> {
+		enabled = false
+	}
+
 	tasks.withType<JacocoCoverageVerification> {
 		violationRules {
 			rule {
@@ -47,11 +73,26 @@ allprojects {
 		}
 	}
 
+	tasks.withType<JacocoReport> {
+		reports {
+			xml.required.set(true)
+		}
+	}
+
 	tasks.withType<Test> {
 		useJUnitPlatform()
 
 		testLogging {
-			events("passed", "skipped", "failed")
+			events(
+				PASSED,
+				SKIPPED,
+				FAILED
+			)
+			showCauses = true
+			showExceptions = true
+			showStackTraces = true
+			exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 		}
 	}
+	
 }

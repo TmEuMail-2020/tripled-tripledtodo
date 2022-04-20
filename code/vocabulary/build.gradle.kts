@@ -1,9 +1,3 @@
-val kotest_version: String by project
-
-plugins {
-    kotlin("jvm")
-}
-
 dependencies {
-
+    // this is how we like our vocabulary
 }
