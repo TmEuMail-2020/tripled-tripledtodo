@@ -28,11 +28,13 @@ class CreateTodoItemTest : RestTest() {
     					}
 					"""))
 				.andDo(print())
+				// assert the returned id
 			.andExpect(content().string("""{
   "id" : "generated-todo-id"
 }"""))
 			.andExpect(status().isCreated)
 
+		//
 		assertThat(fakeApp.requestFrom(CreateTodoItem::class)).isEqualTo(
 			CreateTodoItem.Request(
 				"prep talk",

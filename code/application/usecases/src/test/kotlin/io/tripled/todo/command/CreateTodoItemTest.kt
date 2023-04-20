@@ -31,6 +31,8 @@ class CreateTodoItemTest : TodoItemTest<CreateTodoItem>(
                         TodoItemStatus.CREATED,
                     )
                 )
+
+                // technical noise
                 val event = dispatchedEvents[0] as TodoItem.TodoItemCreated
                 event.id shouldBe response.id
                 event.status shouldBe TodoItemStatus.CREATED

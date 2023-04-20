@@ -1,11 +1,12 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import org.jetbrains.kotlin.gradle.plugin.kotlinToolingVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-	val kotlinVersion = "1.6.20"
+	val kotlinVersion = "1.8.20"
 	val springDependencyManagementVersion = "1.0.11.RELEASE"
 
 	kotlin("jvm") version kotlinVersion
@@ -44,15 +45,17 @@ allprojects {
 		testImplementation("io.kotest:kotest-runner-junit5:$kotest_version")
 		testImplementation("io.kotest:kotest-assertions-core:$kotest_version")
 		testImplementation("io.kotest:kotest-property:$kotest_version")
+		testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
+		testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 	}
 
 	tasks.withType<KotlinCompile> {
-		sourceCompatibility = JavaVersion.VERSION_17.toString()
-		targetCompatibility = JavaVersion.VERSION_17.toString()
+//		sourceCompatibility = JavaVersion.VERSION_17.toString()
+//		targetCompatibility = JavaVersion.VERSION_17.toString()
 
 		kotlinOptions {
-			languageVersion = "1.6"
-			apiVersion = "1.6"
+			languageVersion = "1.8"
+			apiVersion = "1.8"
 			freeCompilerArgs = listOf("-Xjsr305=strict")
 			jvmTarget = JavaVersion.VERSION_17.toString()
 		}
