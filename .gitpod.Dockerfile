@@ -9,4 +9,4 @@ RUN pip3 install projector-installer
 # Install PhpStorm
 RUN mkdir -p ~/.projector/configs  # Prevents projector install from asking for the license acceptance
 # from evernote:///view/58684830/s346/6abd6239-d8a1-ece0-5032-2828777b7e83/0c2e09b1-b749-446b-d20c-a611a6093fe2
-RUN projector ide autoinstall --config-name Idea --ide-name "IntelliJ IDEA Ultimate 2023.1"
+RUN projector install "IntelliJ IDEA Ultimate 2023.1" --no-auto-run
