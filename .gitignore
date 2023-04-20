@@ -1,1 +1,4 @@
 code/main/out
+**/build
+.idea
+.gradle
