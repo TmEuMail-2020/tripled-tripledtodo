@@ -5,6 +5,11 @@
 [![Slack Widget](https://img.shields.io/badge/Slack-Opentripled-blue.svg?style=flat-square)](https://tripled-io.slack.com/messages/opentripled)
 [Jacoco report](https://tripled.pages.gitlab.rotate-it.be/triple-todo/)
 
+## how to run project
+- must remember local `java --version` match with build.gradle.kts:60 jvmTarget version!
+- then go to `io/tripled/todo/TodoItemApplication.kt:33` to run by gutter icon (using Intellij IDEA)
+
+
 ## Background
 
 The new big shot middle manager at BigBank Incorporated got tasked with improving the efficiency of the employees.
