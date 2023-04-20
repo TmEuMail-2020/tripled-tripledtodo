@@ -1,4 +1,4 @@
-rootProject.name = "tasks"
+rootProject.name = "tasksBigBankApp"
 
 include("code:main")
 include("code:vocabulary")
